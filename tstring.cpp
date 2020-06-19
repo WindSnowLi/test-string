@@ -47,8 +47,11 @@ tstring::tstring(const tstring &tstr)
 */
 tstring::~tstring()
 {
-    delete this->tchar;
-    this->tchar = NULL;
+    if (this->tchar != NULL)
+    {
+        delete this->tchar;
+        this->tchar = NULL;
+    }
 }
 
 size_t tstring::GetPCharLength(const char *str)
@@ -64,13 +67,18 @@ size_t tstring::GetPCharLength(const char *str)
     }
     return length;
 }
+
+//2020/6/19 windSnowLi 加入指针是否为空的判断
 void tstring::Strcpy(char *newstr, const char *oldstr)
 {
-    while (*oldstr != '\0')
+    if (oldstr != NULL)
     {
-        *newstr = *oldstr;
-        newstr++;
-        oldstr++;
+        while (*oldstr != '\0')
+        {
+            *newstr = *oldstr;
+            newstr++;
+            oldstr++;
+        }
     }
     *newstr = '\0';
 }
@@ -94,23 +102,25 @@ const char *tstring::cstr()
 * 输    出 : 无
 * 日    期 : 2020-06-18 
 */
+//2020/6/19 windSnowLi 加入指针是否为空的判断
 void tstring::Strcat(char *before, const char *after)
 {
-    while (*before != '\0')
+    if (after != NULL && before != NULL)
     {
-        before++;
-    }
+        while (*before != '\0')
+        {
+            before++;
+        }
 
-    while (*after != '\0')
-    {
-        *before = *after;
-        before++;
-        after++;
+        while (*after != '\0')
+        {
+            *before = *after;
+            before++;
+            after++;
+        }
+        *before = '\0';
     }
-    *before = '\0';
 }
-
-
 
 /****************************************************************************
 * 函数名   : GetLength()
@@ -145,25 +155,30 @@ bool tstring::compare(const tstring &tstr)
 * 输    出 : bool
 * 日    期 : 2020-06-18 
 */
-
+//2020/6/19 windSnowLi 加入指针是否为空的判断
 bool tstring::compareIgnoreCase(const tstring &tstr)
 {
     char *tempstr1 = this->tchar;
     char *tempstr2 = tstr.tchar;
-    while (*tempstr1 != '\0' && *tempstr2 != '\0')
+    //如果指针有空的，则不进行大小写判断
+    if (this->tchar != NULL && tstr.tchar != NULL)
     {
-        //将在字母区域的转化为小写字母进行遍历比较，如果其中有一个不通，那说明字符串忽略大小写不同
-        if (((*tempstr1 <= 'Z' && *tempstr1 >= 'A') ? *tempstr1 - 'A' + 'a' : *tempstr1) != ((*tempstr2 <= 'Z' && *tempstr2 >= 'A') ? *tempstr2 - 'A' + 'a' : *tempstr2))
+        while (*tempstr1 != '\0' && *tempstr2 != '\0')
         {
-            return false;
+            //将在字母区域的转化为小写字母进行遍历比较，如果其中有一个不通，那说明字符串忽略大小写不同
+            if (((*tempstr1 <= 'Z' && *tempstr1 >= 'A') ? *tempstr1 - 'A' + 'a' : *tempstr1) != ((*tempstr2 <= 'Z' && *tempstr2 >= 'A') ? *tempstr2 - 'A' + 'a' : *tempstr2))
+            {
+                return false;
+            }
+            tempstr1++;
+            tempstr2++;
         }
-        tempstr1++;
-        tempstr2++;
-    }
-    //循环遍历完成，并且目前全部相同，如果两个字符串不是都读到了结尾终止符，说明有一个还未比较完成，那就是忽略大小写不同
-    if (*tempstr1 == '\0' && *tempstr2 == '\0')
-    {
-        return true;
+        //循环遍历完成，并且目前全部相同，如果两个字符串不是都读到了结尾终止符，说明有一个还未比较完成，那就是忽略大小写不同
+        //如果指针都为空也视为相等
+        if ((this->tchar == NULL && tstr.tchar == NULL) || (*tempstr1 == '\0' && *tempstr2 == '\0'))
+        {
+            return true;
+        }
     }
     return false;
 }
@@ -175,19 +190,27 @@ bool tstring::compareIgnoreCase(const tstring &tstr)
 * 输    出 : bool
 * 日    期 : 2020-06-18 
 */
-
+//2020/6/19 windSnowLi 加入指针是否为空的判断
 bool tstring::Strcmp(const char *str1, const char *str2)
 {
-    if ((*str1 != '\0') && (*str2 != '\0'))
+    if ((str1 != NULL) && (str2 != NULL))
+    {
+        if ((*str1 != '\0') && (*str2 != '\0'))
+        {
+            return true;
+        }
+        while ((*str1 != '\0') && (*str2 != '\0'))
+        {
+            if (*str1 - *str2 != 0)
+            {
+                return false;
+            }
+        }
+    }
+    //如果指针都为空也视为相等
+    else if (str1 == NULL && str2 == NULL)
     {
         return true;
-    }
-    while ((*str1 != '\0') && (*str2 != '\0'))
-    {
-        if (*str1 - *str2 != 0)
-        {
-            return false;
-        }
     }
     return true;
 }
@@ -199,16 +222,19 @@ bool tstring::Strcmp(const char *str1, const char *str2)
 * 输    出 : 无
 * 日    期 : 2020-06-18 
 */
-
+//2020/6/19 windSnowLi 加入指针是否为空的判断
 void tstring::Strlwr(char *str)
 {
-    while (*str != '\0')
+    if (str != NULL)
     {
-        if (*str <= 'Z' && *str >= 'A')
+        while (*str != '\0')
         {
-            *str -= 'A' - 'a';
+            if (*str <= 'Z' && *str >= 'A')
+            {
+                *str -= 'A' - 'a';
+            }
+            str++;
         }
-        str++;
     }
 }
 
@@ -245,27 +271,30 @@ bool tstring::isEmpty()
 * 输    出 : size_t
 * 日    期 : 2020-06-18 
 */
-
+//2020/6/19 windSnowLi 加入指针是否为空的判断
 size_t tstring::find(const char *targetstr, size_t move = 0)
 {
-    char *ptempstr1 = this->tchar;
-    char *ptempstr2 = (char *)targetstr;
-    size_t index = 0;
-    while (*ptempstr1 != '\0')
+    if (targetstr != NULL && this->tchar != NULL)
     {
-        if (*ptempstr1 == *ptempstr2)
+        char *ptempstr1 = this->tchar;
+        char *ptempstr2 = (char *)targetstr;
+        size_t index = 0;
+        while (*ptempstr1 != '\0')
         {
-            ptempstr2++;
-        }
-        else
-        {
-            ptempstr2 = (char *)targetstr;
-        }
-        ptempstr1++;
-        index++;
-        if (*ptempstr2 == '\0')
-        {
-            return index + move - GetPCharLength(targetstr);
+            if (*ptempstr1 == *ptempstr2)
+            {
+                ptempstr2++;
+            }
+            else
+            {
+                ptempstr2 = (char *)targetstr;
+            }
+            ptempstr1++;
+            index++;
+            if (*ptempstr2 == '\0')
+            {
+                return index + move - GetPCharLength(targetstr);
+            }
         }
     }
     return -1;
@@ -278,13 +307,11 @@ size_t tstring::find(const char *targetstr, size_t move = 0)
 * 输    出 : 无
 * 日    期 : 2020-06-19 
 */
-void tstring::toLowerCase()
+tstring &tstring::toLowerCase()
 {
     this->Strlwr(this->tchar);
+    return *this;
 }
-
-
-
 
 /****************************************************************************
 * 函数名   : 
@@ -293,8 +320,8 @@ void tstring::toLowerCase()
 * 输    出 : tstring对象
 * 日    期 : 2020-06-18 
 */
-//2020/06/16 windsnow 改为修改基准tstring对象
-void tstring::operator=(const char *str)
+//2020/06/16 windsnow 改为返回tstring自身引用
+tstring &tstring::operator=(const char *str)
 {
     // tstring tempstr(str);
     // return tempstr;
@@ -306,6 +333,7 @@ void tstring::operator=(const char *str)
         this->tchar = NULL;
     }
     this->tchar = ptempstr;
+    return *this;
 }
 
 /****************************************************************************
@@ -324,7 +352,6 @@ tstring tstring::operator+(const char *str)
     tempstr.tchar = ptempstr;
     return tempstr;
 }
-
 
 /****************************************************************************
 * 函数名   : 
@@ -350,7 +377,8 @@ tstring tstring::operator+(const tstring &tstr)
 * 输    出 : 无
 * 日    期 : 2020-06-19 
 */
-void tstring::operator>>(tstring &tstr)
+//2020/06/16 windsnow 改为返回tstring自身引用
+tstring &tstring::operator>>(tstring &tstr)
 {
     char *ptempstr = new char[this->GetLength() + 1];
     Strcpy(ptempstr, this->tchar);
@@ -360,6 +388,7 @@ void tstring::operator>>(tstring &tstr)
         tstr.tchar = NULL;
     }
     tstr.tchar = ptempstr;
+    return *this;
 }
 
 /****************************************************************************
@@ -369,8 +398,8 @@ void tstring::operator>>(tstring &tstr)
 * 输    出 : 无
 * 日    期 : 2020-06-19 
 */
-
-void tstring::operator<<(tstring &tstr)
+//2020/06/16 windsnow 改为返回tstring自身引用
+tstring &tstring::operator<<(tstring &tstr)
 {
     char *ptempstr = new char[tstr.GetLength() + 1];
     Strcpy(ptempstr, tstr.tchar);
@@ -380,6 +409,7 @@ void tstring::operator<<(tstring &tstr)
         this->tchar = NULL;
     }
     this->tchar = ptempstr;
+    return *this;
 }
 
 /****************************************************************************
@@ -389,8 +419,8 @@ void tstring::operator<<(tstring &tstr)
 * 输    出 : 无
 * 日    期 : 2020-06-19 
 */
-
-void tstring::operator<<(const char *str)
+//2020/06/16 windsnow 改为返回tstring自身引用
+tstring &tstring::operator<<(const char *str)
 {
     char *ptempstr = new char[GetPCharLength(str) + 1];
     Strcpy(ptempstr, str);
@@ -400,6 +430,29 @@ void tstring::operator<<(const char *str)
         this->tchar = NULL;
     }
     this->tchar = ptempstr;
+    return *this;
+}
+
+/****************************************************************************
+* 函数名   : 
+* 功    能 : 重载+=运算符，trstring对象相加
+* 输    入 : const tstring &tstr
+* 输    出 : 无
+* 日    期 : 2020-06-19 
+*/
+
+tstring &tstring::operator+=(const tstring &tstr)
+{
+    char *ptempstr = new char[this->GetLength() + this->GetLength()];
+    Strcpy(ptempstr, this->cstr());
+    Strcat(ptempstr, tstr.tchar);
+    if (this->tchar != NULL)
+    {
+        delete this->tchar;
+        this->tchar = NULL;
+    }
+    this->tchar = ptempstr;
+    return *this;
 }
 
 /****************************************************************************
@@ -414,4 +467,67 @@ std::ostream &operator<<(std::ostream &os, const tstring &tstr)
 {
     os << tstr.tchar;
     return os;
+}
+/****************************************************************************
+* 函数名   : 
+* 功    能 : 友元istream >>运算符
+* 输    入 : std::istream &is, const tstring &tstr
+* 输    出 : 无
+* 日    期 : 2020-06-19 
+*/
+
+std::istream &operator>>(std::istream &is, tstring &tstr)
+{
+    //currentbig为分配空间的初始大小，默认100
+    size_t currentbig = 100;
+    //当前读取的位数
+    size_t templength = 0;
+    //当前分配空间次数，执行时为1
+    size_t allocatetimes = 1;
+    //初始空间分配100字符
+    char *ptempstr = new char[currentbig];
+    while (!is.eof())
+    {
+        is.read(&ptempstr[templength], 1);
+        templength++;
+        if (templength == currentbig - 1)
+        {
+            ptempstr[templength] = '\0';
+            //分配次数加一
+            allocatetimes++;
+            //申请翻倍
+            char *temp = new char[currentbig * 2];
+            currentbig *= 2;
+            tstring::Strcpy(temp, ptempstr);
+            delete ptempstr;
+            ptempstr = temp;
+        }
+    }
+    if (tstr.tchar != NULL)
+    {
+        delete tstr.tchar;
+        tstr.tchar = NULL;
+    }
+    tstr.tchar = ptempstr;
+}
+
+/****************************************************************************
+* 函数名   : 
+* 功    能 : 重载+=运算符，trstring加char*
+* 输    入 : const char *str
+* 输    出 : tstring &
+* 日    期 : 2020-06-19 
+*/
+tstring &tstring::operator+=(const char *str)
+{
+    char *ptempstr = new char[GetPCharLength(str) + this->GetLength()];
+    Strcpy(ptempstr, this->cstr());
+    Strcat(ptempstr, str);
+    if (this->tchar != NULL)
+    {
+        delete this->tchar;
+        this->tchar = NULL;
+    }
+    this->tchar = ptempstr;
+    return *this;
 }

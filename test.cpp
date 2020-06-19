@@ -1,5 +1,6 @@
 #include <iostream>
 #include "tstring.cpp"
+#include <sstream>
 using namespace std;
 int main(int argc, char const *argv[])
 {
@@ -60,11 +61,28 @@ int main(int argc, char const *argv[])
     test15 >> test16;
     cout << test16 << endl;
 
-    cout << "*********************" << endl;
+    tstring test17;
+    test17 += test16;
+    cout << "LOVE\t" << test17 << endl;
+
+    tstring test18 = "I ";
+    test18 += "LOVE ";
+    cout << test18 << endl;
+
     tstring test12;
     test12 << "我爱你";
     tstring test13 = "我喜欢你";
     tstring test14 = test12 + test13;
     cout << test14 << endl;
+
+    cout << "*********************" << endl;
+    tstring test19="ILoveYouILoveYouILoveYouILoveYouILoveYouILoveYouILoveYouILoveYou";
+
+    istringstream is(test19.cstr());
+
+     tstring test20;
+     is>>test20;
+     cout<<test20<<endl;
+    
     return 0;
 }

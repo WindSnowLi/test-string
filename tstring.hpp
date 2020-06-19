@@ -7,15 +7,15 @@ class tstring
 private:
     char *tchar = NULL;
     //获取字符串长度
-    size_t GetPCharLength(const char *str);
+    static size_t GetPCharLength(const char *str);
     //复制字符串
-    void Strcpy(char *newstr, const char *oldstr);
+    static void Strcpy(char *newstr, const char *oldstr);
     //连接字符串
-    void Strcat(char *before, const char *after);
+    static void Strcat(char *before, const char *after);
     //比较字符串是否相等
-    bool Strcmp(const char *str1, const char *str2);
+    static bool Strcmp(const char *str1, const char *str2);
     //将字符串转化为小写
-    void Strlwr(char *str);
+    static void Strlwr(char *str);
 
 public:
     //无参数
@@ -41,23 +41,29 @@ public:
     //查找字符串，返回首个字符位置,size_t参数为返回后的位置偏移量
     size_t find(const char *newstr, size_t move);
     //将字符串全部转化为小写
-    void toLowerCase();
+    tstring &toLowerCase();
 
 public:
     //重载=运行算符，使用=char*赋值
-    void operator=(const char *str);
+    tstring &operator=(const char *str);
     //重载+运算符，trstring结尾续加字符串
     tstring operator+(const char *str);
     //重载+运算符，trstring对象相加
     tstring operator+(const tstring &tstr);
     //重载>>运算符，trstring对象赋值
-    void operator>>(tstring &tstr);
+    tstring &operator>>(tstring &tstr);
     //重载<<运算符，trstring对象赋值
-    void operator<<(tstring &tstr);
+    tstring &operator<<(tstring &tstr);
     //重载<<运算符，trstring对象赋值
-    void operator<<(const char *str);
+    tstring &operator<<(const char *str);
+    //重载+=运算符，trstring对象相加
+    tstring &operator+=(const tstring &tstr);
+    //重载+=运算符，trstring加char*
+    tstring &operator+=(const char *str);
     //友元ostream <<运算符
     friend std::ostream &operator<<(std::ostream &os, const tstring &tstr);
+    //友元istream >>运算符
+    friend std::istream &operator>>(std::istream &os, tstring &tstr);
 };
 
 #endif // !TSTRING_H_
