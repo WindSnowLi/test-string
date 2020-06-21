@@ -367,6 +367,41 @@ size_t tstring::getStrLength()
 
 /****************************************************************************
 * 函数名   : 
+* 功    能 : 清空函数，将字符串信息清空
+* 输    入 : 无
+* 输    出 : 自身引用
+* 日    期 : 2020-06-21 
+*/
+tstring &tstring::clear()
+{
+    if (this->tchar != NULL)
+    {
+        delete this->tchar;
+        this->tchar;
+    }
+    this->loglength = 0;
+    return *this;
+}
+
+/****************************************************************************
+* 函数名   : swap
+* 功    能 : 交换函数，交换两个tstring的信息
+* 输    入 : tstring &
+* 输    出 : 无
+* 日    期 : 2020-06-21 
+*/
+void tstring::swap(tstring &tstr)
+{
+    char *ptempstr = this->tchar;
+    size_t temploglength = this->loglength;
+    this->tchar = tstr.tchar;
+    this->loglength = tstr.loglength;
+    tstr.tchar = ptempstr;
+    tstr.loglength = temploglength;
+}
+
+/****************************************************************************
+* 函数名   : 
 * 功    能 : 重载=运行算符，使用=char*赋值
 * 输    入 : const char*
 * 输    出 : tstring对象

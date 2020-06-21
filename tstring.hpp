@@ -50,6 +50,10 @@ public:
     tstring &toUpperCase();
     //返回对象内置的长度
     size_t getStrLength();
+    //清空函数，将字符串信息清空
+    tstring &clear();
+    //交换函数，交换两个tstring的信息
+    void swap(tstring &tstr);
 
 public:
     //重载=运行算符，使用=char*赋值
