@@ -19,9 +19,11 @@ tstring::tstring()
 * 输    出 : 无
 * 日    期 : 2020-06-18 
 */
+//2020/06/20 windSnowLi 顺带为对象内置长度赋值
 tstring::tstring(const char *str)
 {
-    tchar = new char[GetPCharLength(str) + 1];
+    this->loglength = GetPCharLength(str);
+    tchar = new char[this->loglength + 1];
     Strcpy(tchar, str);
 }
 
@@ -32,9 +34,11 @@ tstring::tstring(const char *str)
 * 输    出 : 无
 * 日    期 : 2020-06-18 
 */
+//2020/06/20 windSnowLi 顺带为对象内置长度赋值
 tstring::tstring(const tstring &tstr)
 {
-    this->tchar = new char[GetPCharLength(tstr.tchar) + 1];
+    this->loglength = GetLength();
+    this->tchar = new char[this->loglength + 1];
     Strcpy(this->tchar, tstr.tchar);
 }
 
@@ -239,6 +243,29 @@ void tstring::Strlwr(char *str)
 }
 
 /****************************************************************************
+* 函数名   : Strupr
+* 功    能 :转化为大写 
+* 输    入 : char *str
+* 输    出 : 无
+* 日    期 : 2020-06-20 
+*/
+
+void tstring::Strupr(char *str)
+{
+    if (str != NULL)
+    {
+        while (*str != '\0')
+        {
+            if (*str <= 'z' && *str >= 'a')
+            {
+                *str -= 'a' - 'A';
+            }
+            str++;
+        }
+    }
+}
+
+/****************************************************************************
 * 函数名   : charAt
 * 功    能 : 获取字符串上某个字符
 * 输    入 : int index
@@ -314,6 +341,31 @@ tstring &tstring::toLowerCase()
 }
 
 /****************************************************************************
+* 函数名   : toUpperCase
+* 功    能 : 将字符串全部转化为大写
+* 输    入 : 无
+* 输    出 : tstring&
+* 日    期 : 2020-06-20 
+*/
+tstring &tstring::toUpperCase()
+{
+    this->Strupr(this->tchar);
+    return *this;
+}
+
+/****************************************************************************
+* 函数名   : getStrLength
+* 功    能 : 返回对象内置的长度
+* 输    入 : 无
+* 输    出 : size_t
+* 日    期 : 2020-06-20 
+*/
+size_t tstring::getStrLength()
+{
+    return loglength;
+}
+
+/****************************************************************************
 * 函数名   : 
 * 功    能 : 重载=运行算符，使用=char*赋值
 * 输    入 : const char*
@@ -321,11 +373,13 @@ tstring &tstring::toLowerCase()
 * 日    期 : 2020-06-18 
 */
 //2020/06/16 windsnow 改为返回tstring自身引用
+//2020/06/20 windSnowLi 顺带为对象内置长度赋值
 tstring &tstring::operator=(const char *str)
 {
     // tstring tempstr(str);
     // return tempstr;
-    char *ptempstr = new char[GetPCharLength(str) + 1];
+    this->loglength = GetPCharLength(str);
+    char *ptempstr = new char[this->getStrLength() + 1];
     Strcpy(ptempstr, str);
     if (this->tchar != NULL)
     {
@@ -346,7 +400,8 @@ tstring &tstring::operator=(const char *str)
 tstring tstring::operator+(const char *str)
 {
     tstring tempstr;
-    char *ptempstr = new char[GetPCharLength(str) + this->GetLength()];
+    tempstr.loglength = GetPCharLength(str) + this->getStrLength();
+    char *ptempstr = new char[tempstr.loglength + 1];
     Strcpy(ptempstr, this->cstr());
     Strcat(ptempstr, str);
     tempstr.tchar = ptempstr;
@@ -363,10 +418,27 @@ tstring tstring::operator+(const char *str)
 tstring tstring::operator+(const tstring &tstr)
 {
     tstring tempstr;
-    char *ptempstr = new char[this->GetLength() + this->GetLength()];
+    tempstr.loglength = this->getStrLength() + tstr.loglength;
+    char *ptempstr = new char[tempstr.loglength + 1];
     Strcpy(ptempstr, this->cstr());
     Strcat(ptempstr, tstr.tchar);
     tempstr.tchar = ptempstr;
+    return tempstr;
+}
+
+/****************************************************************************
+* 函数名   : 
+* 功    能 : 重载+运算符，trstring加char
+* 输    入 : const char &tempch
+* 输    出 : tstring
+* 日    期 : 2020-06-20 
+*/
+tstring tstring::operator+(const char &ch)
+{
+    char tempch[2] = {ch, '\0'};
+    char *ptemp = tempch;
+    tstring tempstr;
+    tempstr = *this + ptemp;
     return tempstr;
 }
 
@@ -380,7 +452,8 @@ tstring tstring::operator+(const tstring &tstr)
 //2020/06/16 windsnow 改为返回tstring自身引用
 tstring &tstring::operator>>(tstring &tstr)
 {
-    char *ptempstr = new char[this->GetLength() + 1];
+    tstr.loglength = this->getStrLength();
+    char *ptempstr = new char[tstr.getStrLength() + 1];
     Strcpy(ptempstr, this->tchar);
     if (tstr.tchar != NULL)
     {
@@ -401,7 +474,8 @@ tstring &tstring::operator>>(tstring &tstr)
 //2020/06/16 windsnow 改为返回tstring自身引用
 tstring &tstring::operator<<(tstring &tstr)
 {
-    char *ptempstr = new char[tstr.GetLength() + 1];
+    tstr.loglength = this->getStrLength();
+    char *ptempstr = new char[this->getStrLength() + 1];
     Strcpy(ptempstr, tstr.tchar);
     if (this->tchar != NULL)
     {
@@ -422,7 +496,8 @@ tstring &tstring::operator<<(tstring &tstr)
 //2020/06/16 windsnow 改为返回tstring自身引用
 tstring &tstring::operator<<(const char *str)
 {
-    char *ptempstr = new char[GetPCharLength(str) + 1];
+    this->loglength = GetPCharLength(str);
+    char *ptempstr = new char[this->getStrLength() + 1];
     Strcpy(ptempstr, str);
     if (this->tchar != NULL)
     {
@@ -440,10 +515,11 @@ tstring &tstring::operator<<(const char *str)
 * 输    出 : 无
 * 日    期 : 2020-06-19 
 */
-
+//2020/06/20 windSnowLi 顺带为对象内置长度赋值
 tstring &tstring::operator+=(const tstring &tstr)
 {
-    char *ptempstr = new char[this->GetLength() + this->GetLength()];
+    this->loglength = this->getStrLength() + tstr.loglength;
+    char *ptempstr = new char[this->getStrLength() + 1];
     Strcpy(ptempstr, this->cstr());
     Strcat(ptempstr, tstr.tchar);
     if (this->tchar != NULL)
@@ -475,7 +551,7 @@ std::ostream &operator<<(std::ostream &os, const tstring &tstr)
 * 输    出 : 无
 * 日    期 : 2020-06-19 
 */
-
+//2020/06/20 windSnowLi 顺带为对象内置长度赋值
 std::istream &operator>>(std::istream &is, tstring &tstr)
 {
     //currentbig为分配空间的初始大小，默认100
@@ -509,6 +585,8 @@ std::istream &operator>>(std::istream &is, tstring &tstr)
         tstr.tchar = NULL;
     }
     tstr.tchar = ptempstr;
+    //每读取完一位都会++，所以-1回至实际长度
+    tstr.loglength = templength - 1;
 }
 
 /****************************************************************************
@@ -518,9 +596,11 @@ std::istream &operator>>(std::istream &is, tstring &tstr)
 * 输    出 : tstring &
 * 日    期 : 2020-06-19 
 */
+//2020/06/20 windSnowLi 顺带为对象内置长度赋值
 tstring &tstring::operator+=(const char *str)
 {
-    char *ptempstr = new char[GetPCharLength(str) + this->GetLength()];
+    this->loglength = GetPCharLength(str) + this->getStrLength();
+    char *ptempstr = new char[this->getStrLength() + 1];
     Strcpy(ptempstr, this->cstr());
     Strcat(ptempstr, str);
     if (this->tchar != NULL)
@@ -530,4 +610,16 @@ tstring &tstring::operator+=(const char *str)
     }
     this->tchar = ptempstr;
     return *this;
+}
+
+/****************************************************************************
+* 函数名   : 
+* 功    能 : 重载==运算符，判断两trstring对象是否相等
+* 输    入 : tstring &tstr
+* 输    出 : bool
+* 日    期 : 2020-06-20 
+*/
+bool tstring::operator==(const tstring &tstr)
+{
+    return this->compare(tstr);
 }

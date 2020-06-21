@@ -6,6 +6,8 @@ class tstring
 {
 private:
     char *tchar = NULL;
+    //字符串的长度记录
+    size_t loglength = 0;
     //获取字符串长度
     static size_t GetPCharLength(const char *str);
     //复制字符串
@@ -16,6 +18,8 @@ private:
     static bool Strcmp(const char *str1, const char *str2);
     //将字符串转化为小写
     static void Strlwr(char *str);
+    //转化为大写
+    static void Strupr(char *str);
 
 public:
     //无参数
@@ -42,6 +46,10 @@ public:
     size_t find(const char *newstr, size_t move);
     //将字符串全部转化为小写
     tstring &toLowerCase();
+    //将字符串全部转化为大写
+    tstring &toUpperCase();
+    //返回对象内置的长度
+    size_t getStrLength();
 
 public:
     //重载=运行算符，使用=char*赋值
@@ -50,6 +58,8 @@ public:
     tstring operator+(const char *str);
     //重载+运算符，trstring对象相加
     tstring operator+(const tstring &tstr);
+    //重载+运算符，trstring加char
+    tstring operator+(const char &tempch);
     //重载>>运算符，trstring对象赋值
     tstring &operator>>(tstring &tstr);
     //重载<<运算符，trstring对象赋值
@@ -60,6 +70,8 @@ public:
     tstring &operator+=(const tstring &tstr);
     //重载+=运算符，trstring加char*
     tstring &operator+=(const char *str);
+    //重载==运算符，判断两trstring对象是否相等
+    bool operator==(const tstring &tstr);
     //友元ostream <<运算符
     friend std::ostream &operator<<(std::ostream &os, const tstring &tstr);
     //友元istream >>运算符

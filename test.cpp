@@ -22,9 +22,9 @@ int main(int argc, char const *argv[])
     tstring test6 = test5 + "我爱你啊" + test4;
     cout << test6.cstr() << endl;
 
-    if (test1.compare(test4))
+    if (test1 == test4)
     {
-        cout << "I Love You" << endl;
+        cout << "I Love You!!!!!" << endl;
     }
     tstring test7 = "I Love You";
     cout << test7.charAt(2) << endl;
@@ -76,13 +76,22 @@ int main(int argc, char const *argv[])
     cout << test14 << endl;
 
     cout << "*********************" << endl;
-    tstring test19="ILoveYouILoveYouILoveYouILoveYouILoveYouILoveYouILoveYouILoveYou";
+    tstring test19 = "ILoveYouILoveYouILoveYouILoveYouILoveYouILoveYouILoveYouILoveYou";
 
     istringstream is(test19.cstr());
 
-     tstring test20;
-     is>>test20;
-     cout<<test20<<endl;
-    
+    tstring test20;
+    is >> test20;
+    cout << test20 << endl;
+
+    cout << test11.GetLength() << endl;
+    cout << test11.getStrLength() << endl;
+    char a = '5';
+    char tt[2];
+    tstring temp22 = "I Love Yo";
+    temp22 = temp22 + 'u';
+    cout << temp22 << endl;
+
+    cout << "end" << endl;
     return 0;
 }
