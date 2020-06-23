@@ -91,7 +91,8 @@ int main(int argc, char const *argv[])
     tstring temp22 = "I Love Yo";
     temp22 = temp22 + 'u';
     cout << temp22 << endl;
-
+    tstring aaa;
+    cout<<aaa;
     cout << "end" << endl;
     return 0;
 }

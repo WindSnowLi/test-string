@@ -573,10 +573,13 @@ tstring &tstring::operator+=(const tstring &tstr)
 * 输    出 : ostream&
 * 日    期 : 2020-06-19 
 */
-
+//2020/06/23 windSnowLi 判断是否为空指针
 std::ostream &operator<<(std::ostream &os, const tstring &tstr)
 {
-    os << tstr.tchar;
+    if (tstr.tchar != NULL)
+    {
+        os << tstr.tchar;
+    }
     return os;
 }
 /****************************************************************************
