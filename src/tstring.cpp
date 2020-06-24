@@ -1,6 +1,8 @@
 #include "tstring.hpp"
 #include <iostream>
 
+#include "MD5.hpp"
+
 /****************************************************************************
 * 函数名   : tstring()
 * 功    能 : 无参数初始化
@@ -20,11 +22,17 @@ tstring::tstring()
 * 日    期 : 2020-06-18 
 */
 //2020/06/20 windSnowLi 顺带为对象内置长度赋值
+//v0.0.2 2020/06/23 windSnowLi 修改空间申请定义
+
 tstring::tstring(const char *str)
 {
-    this->loglength = GetPCharLength(str);
-    tchar = new char[this->loglength + 1];
-    Strcpy(tchar, str);
+    size_t templength = GetPCharLength(str);
+    //检查空间是否需要变动
+    this->checkNextMaxSizeSpace(templength);
+
+    this->loglength = templength;
+
+    Strcpy(this->tchar, str);
 }
 
 /****************************************************************************
@@ -35,10 +43,10 @@ tstring::tstring(const char *str)
 * 日    期 : 2020-06-18 
 */
 //2020/06/20 windSnowLi 顺带为对象内置长度赋值
+//v0.0.2 2020/06/23 windSnowLi 修改空间申请定义
 tstring::tstring(const tstring &tstr)
 {
-    this->loglength = GetLength();
-    this->tchar = new char[this->loglength + 1];
+    this->checkNextMaxSizeSpace(tstr.loglength);
     Strcpy(this->tchar, tstr.tchar);
 }
 
@@ -133,11 +141,11 @@ void tstring::Strcat(char *before, const char *after)
 * 输    出 : size_t
 * 日    期 : 2020-06-18 
 */
-
-size_t tstring::GetLength()
-{
-    return GetPCharLength(this->cstr());
-}
+//于2020/06/23 windSnowLi 弃用
+// size_t tstring::GetLength()
+// {
+//     return GetPCharLength(this->cstr());
+// }
 
 /****************************************************************************
 * 函数名   : compare
@@ -146,9 +154,13 @@ size_t tstring::GetLength()
 * 输    出 : bool
 * 日    期 : 2020-06-18 
 */
-
+//v0.0.2  2020/06/23 windSnowLi 优先进行长度匹配
 bool tstring::compare(const tstring &tstr)
 {
+    if (this->loglength != tstr.loglength)
+    {
+        return false;
+    }
     return Strcmp(this->cstr(), tstr.tchar);
 }
 
@@ -160,8 +172,13 @@ bool tstring::compare(const tstring &tstr)
 * 日    期 : 2020-06-18 
 */
 //2020/6/19 windSnowLi 加入指针是否为空的判断
+//v0.0.2  2020/06/23 windSnowLi 优先进行长度匹配
 bool tstring::compareIgnoreCase(const tstring &tstr)
 {
+    if (this->loglength != tstr.loglength)
+    {
+        return false;
+    }
     char *tempstr1 = this->tchar;
     char *tempstr2 = tstr.tchar;
     //如果指针有空的，则不进行大小写判断
@@ -266,6 +283,38 @@ void tstring::Strupr(char *str)
 }
 
 /****************************************************************************
+* 函数名   : checkNextMaxSizeSpace
+* 功    能 : 检查下一次需要的空间是否需要变动，如果变动，将老信息转存至新空间并将tstr新空间指针,否则不做改变,参数为要接受的新的字符串长度
+* 输    入 : char *newstr
+* 输    出 : char *
+* 日    期 : 2020-06-23 
+*/
+void tstring::checkNextMaxSizeSpace(size_t newstrsize)
+{
+    size_t temp_max_length = this->max_length;
+    while (true)
+    {
+        if (this->loglength + newstrsize >= this->max_length)
+        {
+            //默认两倍倍率扩大
+            this->max_length *= 2;
+        }
+        else
+        {
+            break;
+        }
+    }
+    if (temp_max_length != max_length)
+    {
+        //新申请的空间
+        char *tempstrspace = new char[max_length];
+        Strcpy(tempstrspace, this->tchar);
+        delete this->tchar;
+        this->tchar = tempstrspace;
+    }
+}
+
+/****************************************************************************
 * 函数名   : charAt
 * 功    能 : 获取字符串上某个字符
 * 输    入 : int index
@@ -285,10 +334,10 @@ char tstring::charAt(int index)
 * 输    出 : bool
 * 日    期 : 2020-06-18 
 */
-
+//v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数
 bool tstring::isEmpty()
 {
-    return !this->GetLength();
+    return !this->getLength();
 }
 
 /****************************************************************************
@@ -354,13 +403,14 @@ tstring &tstring::toUpperCase()
 }
 
 /****************************************************************************
-* 函数名   : getStrLength
+* 函数名   : getLength
 * 功    能 : 返回对象内置的长度
 * 输    入 : 无
 * 输    出 : size_t
 * 日    期 : 2020-06-20 
 */
-size_t tstring::getStrLength()
+//2020/06/23 windSnowLi 将名称更改为getLength()
+size_t tstring::getLength()
 {
     return loglength;
 }
@@ -374,12 +424,13 @@ size_t tstring::getStrLength()
 */
 tstring &tstring::clear()
 {
-    if (this->tchar != NULL)
+    if (this->loglength != 0)
     {
         delete this->tchar;
-        this->tchar;
+        this->tchar = new char[128];
+        this->loglength = 0;
+        this->max_length = 128;
     }
-    this->loglength = 0;
     return *this;
 }
 
@@ -393,11 +444,41 @@ tstring &tstring::clear()
 void tstring::swap(tstring &tstr)
 {
     char *ptempstr = this->tchar;
-    size_t temploglength = this->loglength;
+    size_t temp_loglength = this->loglength;
+    size_t temp_max_length = this->getMaxSize();
+
     this->tchar = tstr.tchar;
     this->loglength = tstr.loglength;
+    this->max_length = tstr.getMaxSize();
+
+    tstr.max_length = temp_max_length;
     tstr.tchar = ptempstr;
-    tstr.loglength = temploglength;
+    tstr.loglength = temp_loglength;
+}
+
+/****************************************************************************
+* 函数名   : getMaxSize()
+* 功    能 : 返回当前空间最大长度
+* 输    入 : 无
+* 输    出 : size_t
+* 日    期 : 2020-06-23 
+*/
+
+size_t tstring::getMaxSize()
+{
+    return max_length;
+}
+
+/****************************************************************************
+* 函数名   : getMD5()
+* 功    能 : 摘要信息 MD5
+* 输    入 : 无
+* 输    出 : tstring
+* 日    期 : 2020-06-24 
+*/
+tstring tstring::getMD5()
+{
+    return ToMD5GetStr((unsigned char*)this->tchar);
 }
 
 /****************************************************************************
@@ -409,19 +490,29 @@ void tstring::swap(tstring &tstr)
 */
 //2020/06/16 windsnow 改为返回tstring自身引用
 //2020/06/20 windSnowLi 顺带为对象内置长度赋值
+//v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数，更改空间申请方式
+
 tstring &tstring::operator=(const char *str)
 {
-    // tstring tempstr(str);
-    // return tempstr;
-    this->loglength = GetPCharLength(str);
-    char *ptempstr = new char[this->getStrLength() + 1];
-    Strcpy(ptempstr, str);
-    if (this->tchar != NULL)
+    //如果字符串本身不为零，释放已有内存，长度置为零
+    if (this->loglength != 0)
     {
         delete this->tchar;
-        this->tchar = NULL;
+        this->tchar = new char[128];
+        this->loglength = 0;
+        this->max_length = 128;
     }
-    this->tchar = ptempstr;
+    size_t templength = GetPCharLength(str);
+
+    //检查当前最大空间是否够用
+    this->checkNextMaxSizeSpace(templength);
+
+    //将即将接收的字符串长度设为新字符串的长度
+    this->loglength = templength;
+
+    //将接收到的char*复制到新字符串
+    Strcpy(this->tchar, str);
+
     return *this;
 }
 
@@ -432,14 +523,28 @@ tstring &tstring::operator=(const char *str)
 * 输    出 : trstring对象
 * 日    期 : 2020-06-18 
 */
+//v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数
+//v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数，更改空间申请方式
 tstring tstring::operator+(const char *str)
 {
+    //创建临时对象
     tstring tempstr;
-    tempstr.loglength = GetPCharLength(str) + this->getStrLength();
-    char *ptempstr = new char[tempstr.loglength + 1];
-    Strcpy(ptempstr, this->cstr());
-    Strcat(ptempstr, str);
-    tempstr.tchar = ptempstr;
+
+    //获得相加后的总长度
+    size_t templength = GetPCharLength(str) + this->getLength();
+
+    //检查临时对象空间是否够用
+    tempstr.checkNextMaxSizeSpace(tempstr.loglength);
+
+    //将相加后的总长度设为临时对象的长度
+    tempstr.loglength = templength;
+
+    //将+前字符串拷贝纸临时对象
+    Strcpy(tempstr.tchar, this->tchar);
+
+    //将+后char*追加到临时对象
+    Strcat(tempstr.tchar, str);
+
     return tempstr;
 }
 
@@ -450,14 +555,28 @@ tstring tstring::operator+(const char *str)
 * 输    出 : 
 * 日    期 : 2020-06-18 
 */
+//v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数
+//v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数，更改空间申请方式
 tstring tstring::operator+(const tstring &tstr)
 {
+    //创建临时对象
     tstring tempstr;
-    tempstr.loglength = this->getStrLength() + tstr.loglength;
-    char *ptempstr = new char[tempstr.loglength + 1];
-    Strcpy(ptempstr, this->cstr());
-    Strcat(ptempstr, tstr.tchar);
-    tempstr.tchar = ptempstr;
+
+    //获得相加后的总长度
+    size_t templength = this->getLength() + tstr.loglength;
+
+    //检查临时对象空间是否够用
+    tempstr.checkNextMaxSizeSpace(templength);
+
+    //将相加后的总长度设为临时对象的长度
+    tempstr.loglength = templength;
+
+    //将+前字符串拷贝纸临时对象
+    Strcpy(tempstr.tchar, this->tchar);
+
+    //将+后char*追加到临时对象
+    Strcat(tempstr.tchar, tstr.tchar);
+
     return tempstr;
 }
 
@@ -468,12 +587,31 @@ tstring tstring::operator+(const tstring &tstr)
 * 输    出 : tstring
 * 日    期 : 2020-06-20 
 */
+//v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数，更改空间申请方式
 tstring tstring::operator+(const char &ch)
 {
+    //将char转化为指针类型
     char tempch[2] = {ch, '\0'};
     char *ptemp = tempch;
+
+    //创建临时对象
     tstring tempstr;
-    tempstr = *this + ptemp;
+
+    //获得相加后的总长度
+    size_t templength = this->loglength + 1;
+
+    //检查临时对象空间是否够用
+    tempstr.checkNextMaxSizeSpace(templength);
+
+    //将相加后的总长度设为临时对象的长度
+    tempstr.loglength = templength;
+
+    //拷贝原有字符串内容
+    Strcpy(tempstr.tchar, this->tchar);
+
+    //将+后字符追加到临时对象
+    Strcat(tempstr.tchar, ptemp);
+
     return tempstr;
 }
 
@@ -485,17 +623,29 @@ tstring tstring::operator+(const char &ch)
 * 日    期 : 2020-06-19 
 */
 //2020/06/16 windsnow 改为返回tstring自身引用
+//v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数
+//v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数，更改空间申请方式
 tstring &tstring::operator>>(tstring &tstr)
 {
-    tstr.loglength = this->getStrLength();
-    char *ptempstr = new char[tstr.getStrLength() + 1];
-    Strcpy(ptempstr, this->tchar);
-    if (tstr.tchar != NULL)
+
+    //识别是否需要清空
+    if (tstr.loglength != 0)
     {
         delete tstr.tchar;
-        tstr.tchar = NULL;
+        tstr.max_length = 128;
+        tstr.loglength = 0;
+        tstr.tchar = new char[tstr.max_length];
     }
-    tstr.tchar = ptempstr;
+
+    //判断>>后的字符串空间是否足够
+    tstr.checkNextMaxSizeSpace(this->getLength());
+
+    //将长度信息赋值给>>后的字符串
+    tstr.loglength = this->getLength();
+
+    //将>>左边的字符串拷贝给右边的字符串
+    Strcpy(tstr.tchar, this->tchar);
+
     return *this;
 }
 
@@ -507,17 +657,28 @@ tstring &tstring::operator>>(tstring &tstr)
 * 日    期 : 2020-06-19 
 */
 //2020/06/16 windsnow 改为返回tstring自身引用
+//v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数
+//v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数，更改空间申请方式
 tstring &tstring::operator<<(tstring &tstr)
 {
-    tstr.loglength = this->getStrLength();
-    char *ptempstr = new char[this->getStrLength() + 1];
-    Strcpy(ptempstr, tstr.tchar);
-    if (this->tchar != NULL)
+    //识别是否需要清空
+    if (this->loglength != 0)
     {
         delete this->tchar;
-        this->tchar = NULL;
+        this->max_length = 128;
+        this->loglength = 0;
+        this->tchar = new char[this->max_length];
     }
-    this->tchar = ptempstr;
+
+    //判断空间是否足够
+    this->checkNextMaxSizeSpace(this->getLength());
+
+    //将<<右边的长度信息给左边
+    this->loglength = this->getLength();
+
+    //将信息拷贝至<<左边
+    Strcpy(this->tchar, tstr.tchar);
+
     return *this;
 }
 
@@ -529,17 +690,31 @@ tstring &tstring::operator<<(tstring &tstr)
 * 日    期 : 2020-06-19 
 */
 //2020/06/16 windsnow 改为返回tstring自身引用
+//v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数
+//v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数，更改空间申请方式
 tstring &tstring::operator<<(const char *str)
 {
-    this->loglength = GetPCharLength(str);
-    char *ptempstr = new char[this->getStrLength() + 1];
-    Strcpy(ptempstr, str);
-    if (this->tchar != NULL)
+
+    //识别是否需要清空
+    if (this->loglength != 0)
     {
         delete this->tchar;
-        this->tchar = NULL;
+        this->max_length = 128;
+        this->loglength = 0;
+        this->tchar = new char[this->max_length];
     }
-    this->tchar = ptempstr;
+
+    size_t templength = GetPCharLength(str);
+
+    //判断空间是否足够
+    this->checkNextMaxSizeSpace(templength);
+
+    //将<<右边的长度信息给左边
+    this->loglength = templength;
+
+    //将信息拷贝至<<左边
+    Strcpy(this->tchar, str);
+
     return *this;
 }
 
@@ -551,18 +726,23 @@ tstring &tstring::operator<<(const char *str)
 * 日    期 : 2020-06-19 
 */
 //2020/06/20 windSnowLi 顺带为对象内置长度赋值
+//v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数
+//v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数，更改空间申请方式
 tstring &tstring::operator+=(const tstring &tstr)
 {
-    this->loglength = this->getStrLength() + tstr.loglength;
-    char *ptempstr = new char[this->getStrLength() + 1];
-    Strcpy(ptempstr, this->cstr());
-    Strcat(ptempstr, tstr.tchar);
-    if (this->tchar != NULL)
-    {
-        delete this->tchar;
-        this->tchar = NULL;
-    }
-    this->tchar = ptempstr;
+
+    //获得相加后的总长度
+    size_t templength = this->getLength() + tstr.loglength;
+
+    //检查奔对象最大空间是否足够
+    this->checkNextMaxSizeSpace(templength);
+
+    //更新字符串长度
+    this->loglength = templength;
+
+    //将接收到的字符串追加上去
+    Strcat(this->tchar, tstr.tchar);
+
     return *this;
 }
 
@@ -590,39 +770,31 @@ std::ostream &operator<<(std::ostream &os, const tstring &tstr)
 * 日    期 : 2020-06-19 
 */
 //2020/06/20 windSnowLi 顺带为对象内置长度赋值
+//v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数，更改空间申请方式
 std::istream &operator>>(std::istream &is, tstring &tstr)
 {
-    //currentbig为分配空间的初始大小，默认100
-    size_t currentbig = 100;
-    //当前读取的位数
-    size_t templength = 0;
-    //当前分配空间次数，执行时为1
-    size_t allocatetimes = 1;
-    //初始空间分配100字符
-    char *ptempstr = new char[currentbig];
-    while (!is.eof())
-    {
-        is.read(&ptempstr[templength], 1);
-        templength++;
-        if (templength == currentbig - 1)
-        {
-            ptempstr[templength] = '\0';
-            //分配次数加一
-            allocatetimes++;
-            //申请翻倍
-            char *temp = new char[currentbig * 2];
-            currentbig *= 2;
-            tstring::Strcpy(temp, ptempstr);
-            delete ptempstr;
-            ptempstr = temp;
-        }
-    }
-    if (tstr.tchar != NULL)
+    //识别是否需要清空
+    if (tstr.loglength != 0)
     {
         delete tstr.tchar;
-        tstr.tchar = NULL;
+        tstr.max_length = 128;
+        tstr.loglength = 0;
+        tstr.tchar = new char[tstr.max_length];
     }
-    tstr.tchar = ptempstr;
+
+    //当前读取的位数
+    size_t templength = 0;
+
+    while (!is.eof())
+    {
+        is.read(&tstr.tchar[templength], 1);
+        templength++;
+        if (templength == tstr.max_length - 1)
+        {
+            //检查扩容
+            tstr.checkNextMaxSizeSpace(templength);
+        }
+    }
     //每读取完一位都会++，所以-1回至实际长度
     tstr.loglength = templength - 1;
 }
@@ -635,18 +807,23 @@ std::istream &operator>>(std::istream &is, tstring &tstr)
 * 日    期 : 2020-06-19 
 */
 //2020/06/20 windSnowLi 顺带为对象内置长度赋值
+//v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数
+//v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数，更改空间申请方式
 tstring &tstring::operator+=(const char *str)
 {
-    this->loglength = GetPCharLength(str) + this->getStrLength();
-    char *ptempstr = new char[this->getStrLength() + 1];
-    Strcpy(ptempstr, this->cstr());
-    Strcat(ptempstr, str);
-    if (this->tchar != NULL)
-    {
-        delete this->tchar;
-        this->tchar = NULL;
-    }
-    this->tchar = ptempstr;
+
+    //获得相加后的总长度
+    size_t templength = GetPCharLength(str) + this->getLength();
+
+    //检查是否需要扩容
+    this->checkNextMaxSizeSpace(templength);
+
+    //更新字符串长度
+    this->loglength = templength;
+
+    //追加新数据
+    Strcat(this->tchar, str);
+
     return *this;
 }
 

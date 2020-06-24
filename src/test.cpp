@@ -1,6 +1,7 @@
 #include <iostream>
-#include "tstring.cpp"
+#include "tstring.hpp"
 #include <sstream>
+#include <cstring>
 using namespace std;
 int main(int argc, char const *argv[])
 {
@@ -55,7 +56,7 @@ int main(int argc, char const *argv[])
         cout << "me too too!! " << endl;
     }
 
-    cout << test11.find("Love") << endl;
+    cout << test11.find("Love", 0) << endl;
 
     tstring test15 = "windSnowLi", test16;
     test15 >> test16;
@@ -84,15 +85,18 @@ int main(int argc, char const *argv[])
     is >> test20;
     cout << test20 << endl;
 
-    cout << test11.GetLength() << endl;
-    cout << test11.getStrLength() << endl;
+    cout << test11.getLength() << "\t" << strlen(test11.cstr()) << endl;
     char a = '5';
     char tt[2];
     tstring temp22 = "I Love Yo";
     temp22 = temp22 + 'u';
     cout << temp22 << endl;
     tstring aaa;
-    cout<<aaa;
+    cout << aaa;
+    cout << test19.getMaxSize() << "\t" << test19.getLength() << endl;
+    cout << test11.getMaxSize() << "\t" << test11.getLength() << endl;
+    cout << test19.getMD5() << endl;
     cout << "end" << endl;
+    getchar();
     return 0;
 }

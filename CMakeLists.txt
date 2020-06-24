@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 2.8)
+project(trstring)
+set(CMAKE_CXX_COMPILER "g++")
+set(CMAKE_CXX_FLAGS  "-g -fexec-charset=GBK")
+include_directories(${PROJECT_SOURCE_DIR}/include)
+aux_source_directory(./src SrcFiles)
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+add_executable(score ${SrcFiles})

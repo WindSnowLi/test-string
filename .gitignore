@@ -19,3 +19,10 @@
 *.exe
 *.out
 *.app
+
+# 无关文件
+bin/*
+bin\*
+build\*
+build/*
+.vscode
