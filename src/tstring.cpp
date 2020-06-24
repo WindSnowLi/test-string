@@ -81,9 +81,10 @@ size_t tstring::GetPCharLength(const char *str)
 }
 
 //2020/6/19 windSnowLi 加入指针是否为空的判断
+//2020/06/24 windSnowLi 修复新指针为空的BUG
 void tstring::Strcpy(char *newstr, const char *oldstr)
 {
-    if (oldstr != NULL)
+    if (oldstr != NULL && newstr != NULL)
     {
         while (*oldstr != '\0')
         {
@@ -91,8 +92,8 @@ void tstring::Strcpy(char *newstr, const char *oldstr)
             newstr++;
             oldstr++;
         }
+        *newstr = '\0';
     }
-    *newstr = '\0';
 }
 
 /****************************************************************************
@@ -478,7 +479,7 @@ size_t tstring::getMaxSize()
 */
 tstring tstring::getMD5()
 {
-    return ToMD5GetStr((unsigned char*)this->tchar);
+    return ToMD5GetStr((unsigned char *)this->tchar);
 }
 
 /****************************************************************************
@@ -736,13 +737,12 @@ tstring &tstring::operator+=(const tstring &tstr)
 
     //检查奔对象最大空间是否足够
     this->checkNextMaxSizeSpace(templength);
-
+    
     //更新字符串长度
     this->loglength = templength;
 
     //将接收到的字符串追加上去
     Strcat(this->tchar, tstr.tchar);
-
     return *this;
 }
 
