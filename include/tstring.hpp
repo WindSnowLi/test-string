@@ -47,17 +47,17 @@ public:
     tstring();
     //直接初始化
     tstring(const char *str);
-    
+
     //使用另一个对象初始化
     tstring(const tstring &tstr);
+
+    //使用标准库std::string初始化
+    tstring(const std::string &stdstr);
+
     //析构函数
     ~tstring();
     //转化为char*
     const char *cstr();
-
-    //获取对象得字符串长度
-    //于2020/06/23弃用
-    //size_t GetLength();
 
     //比较两个对象是否相等
     bool compare(const tstring &tstr);
@@ -68,7 +68,7 @@ public:
     //判断字符串是否为空
     bool isEmpty();
     //查找字符串，返回首个字符位置,size_t参数为返回后的位置偏移量
-    size_t find(const char *newstr, size_t move);
+    size_t find(const char *targetstr, size_t move = 0);
     //将字符串全部转化为小写
     tstring &toLowerCase();
     //将字符串全部转化为大写
@@ -87,6 +87,7 @@ public:
 
     //摘要信息 MD5
     tstring getMD5();
+
 public:
     //重载=运行算符，使用=char*赋值
     tstring &operator=(const char *str);
@@ -108,6 +109,16 @@ public:
     tstring &operator+=(const char *str);
     //重载==运算符，判断两trstring对象是否相等
     bool operator==(const tstring &tstr);
+
+    //重载=运算符,使用标准库std::string赋值
+    tstring &operator=(const std::string &stdstr);
+
+    //重载+=运算符,tstring+标准库std::string赋值
+    tstring &operator+=(const std::string &stdstr);
+
+    //重载[]运算符，用于下标取值
+    char &operator[](int move);
+
     //友元ostream <<运算符
     friend std::ostream &operator<<(std::ostream &os, const tstring &tstr);
     //友元istream >>运算符

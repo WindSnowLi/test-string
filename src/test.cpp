@@ -56,7 +56,7 @@ int main(int argc, char const *argv[])
         cout << "me too too!! " << endl;
     }
 
-    cout << test11.find("Love", 0) << endl;
+    cout << test11.find("Love") << endl;
 
     tstring test15 = "windSnowLi", test16;
     test15 >> test16;
@@ -96,6 +96,21 @@ int main(int argc, char const *argv[])
     cout << test19.getMaxSize() << "\t" << test19.getLength() << endl;
     cout << test11.getMaxSize() << "\t" << test11.getLength() << endl;
     cout << test19.getMD5() << endl;
+
+    tstring test23;
+    test23 += "I Love You。";
+    cout << test23 << endl;
+    test23[10] = '.';
+    cout << test23 << endl;
+
+    std::string test24 = "windSnowLi";
+    cout << test24 << endl;
+
+    tstring test25 = test24;
+    tstring test26(test24);
+    test26 += test24;
+    cout << test25 << "\t||\t" << test26 << endl;
+
     cout << "end" << endl;
     getchar();
     return 0;

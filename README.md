@@ -52,6 +52,18 @@
 
     //摘要信息 MD5
     tstring getMD5();
+
+    //重载[]运算符，用于下标取值
+    char& operator[](int move);
+
+    //使用标准库std::string初始化
+    tstring(const std::string &stdstr);
+
+    //重载=运算符,使用标准库std::string赋值
+    tstring &operator=(const std::string &stdstr);
+
+    //重载+=运算符,tstring+标准库std::string赋值,使用默认的转化为tstring相加耗费资源
+    tstring &operator+=(const std::string &stdstr);
 ```
 
 ### 修改
@@ -60,6 +72,8 @@
 对比字符串优先进行长度判断
 更改字符串运算空间申请方式
 
-
 ### 修复
+
 修复tstring+=tstring的部分BUG
+修复find的缺省参数功能
+修复使用tstring为新字符串赋值长度未初始化的BUG
