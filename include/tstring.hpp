@@ -13,7 +13,7 @@
 #define TSTRING_H_
 #include <iostream>
 #include <ostream>
-
+#include <sstream>
 class tstring
 {
 private:
@@ -134,4 +134,44 @@ public:
     friend std::istream &operator>>(std::istream &os, tstring &tstr);
 };
 
+//将基本类型参数内容转化为tstring
+template <typename Type>
+tstring toTstring(const Type &val);
+
+/****************************************************************************
+* 函数名   : 
+* 功    能 : 将int参数内容转化为tstring
+* 输    入 : typename val
+* 输    出 : tstring
+* 日    期 : 2020-06-26 
+*/
+
+template <typename Type>
+tstring toTstring(const Type &val)
+{
+    static_assert(std::is_same<Type, char>::value ||
+                      std::is_same<Type, unsigned char>::value ||
+                      std::is_same<Type, signed char>::value ||
+                      std::is_same<Type, int>::value ||
+                      std::is_same<Type, unsigned int>::value ||
+                      std::is_same<Type, signed int>::value ||
+                      std::is_same<Type, short int>::value ||
+                      std::is_same<Type, unsigned short int>::value ||
+                      std::is_same<Type, signed short int>::value ||
+                      std::is_same<Type, long int>::value ||
+                      std::is_same<Type, signed long int>::value ||
+                      std::is_same<Type, unsigned long int>::value ||
+                      std::is_same<Type, long>::value ||
+                      std::is_same<Type, long long>::value ||
+                      std::is_same<Type, double>::value ||
+                      std::is_same<Type, long double>::value ||
+                      std::is_same<Type, float>::value ||
+                      std::is_same<Type, short>::value,
+                  "Unsupported types");
+    std::stringstream ss;
+    ss << val;
+    tstring temptstr;
+    ss >> temptstr;
+    return temptstr;
+}
 #endif // !TSTRING_H_

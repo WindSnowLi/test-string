@@ -106,6 +106,7 @@ int main(int argc, char const *argv[])
     std::string test24 = "windSnowLi";
     cout << test24 << endl;
 
+
     tstring test25 = test24;
     tstring test26(test24);
     test26 += test24;
@@ -124,6 +125,9 @@ int main(int argc, char const *argv[])
     tstring test29;
     test29 += 'a';
     cout << test29 << endl;
+    tstring test30;
+    test30 = toTstring(125.5);
+    cout << test30 << endl;
     cout << "end" << endl;
     getchar();
     return 0;

@@ -92,3 +92,13 @@
     //重载+运算符,=tstring+标准库std::string
     tstring operator+(const std::string &stdstr);
 ```
+
+## v0.0.2.2
+
+### 增加
+
+``` 
+    //将基本类型参数内容转化为tstring
+    template <typename Type>
+    tstring toTstring(const Type &val);
+```
