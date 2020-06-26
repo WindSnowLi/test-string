@@ -111,6 +111,19 @@ int main(int argc, char const *argv[])
     test26 += test24;
     cout << test25 << "\t||\t" << test26 << endl;
 
+    tstring test27 = "aab";
+    char *test28 = (char *)test27.cstr();
+    test28[2] = 'a';
+    cout << test28 << endl;
+
+    test19.replace("ILoveYou", " I LOVE YOU");
+    cout << test19 << endl;
+    test19.replace("LOVE", "");
+    cout << test19 << endl;
+
+    tstring test29;
+    test29 += 'a';
+    cout << test29 << endl;
     cout << "end" << endl;
     getchar();
     return 0;

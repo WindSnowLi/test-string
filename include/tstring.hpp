@@ -88,6 +88,9 @@ public:
     //摘要信息 MD5
     tstring getMD5();
 
+    //替换指定字符串
+    void replace(const char *targetstr, const char *newstr);
+
 public:
     //重载=运行算符，使用=char*赋值
     tstring &operator=(const char *str);
@@ -113,11 +116,17 @@ public:
     //重载=运算符,使用标准库std::string赋值
     tstring &operator=(const std::string &stdstr);
 
-    //重载+=运算符,tstring+标准库std::string赋值
+    //重载+运算符,=tstring+标准库std::string
+    tstring operator+(const std::string &stdstr);
+
+    //重载+=运算符,tstring+=标准库std::string赋值
     tstring &operator+=(const std::string &stdstr);
 
     //重载[]运算符，用于下标取值
     char &operator[](int move);
+
+    //重载+=运算符，trstring加char
+    tstring &operator+=(const char &ch);
 
     //友元ostream <<运算符
     friend std::ostream &operator<<(std::ostream &os, const tstring &tstr);

@@ -77,3 +77,18 @@
 修复tstring+=tstring的部分BUG
 修复find的缺省参数功能
 修复使用tstring为新字符串赋值长度未初始化的BUG
+
+## v0.0.2.1
+
+### 增加
+
+``` 
+    //替换指定字符串
+    void replace(const char *targetstr, const char *newstr);
+
+    //重载+=运算符，trstring加char
+    tstring &operator+=(const char &ch);
+
+    //重载+运算符,=tstring+标准库std::string
+    tstring operator+(const std::string &stdstr);
+```

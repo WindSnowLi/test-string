@@ -491,6 +491,63 @@ tstring tstring::getMD5()
 }
 
 /****************************************************************************
+* 函数名   : replace
+* 功    能 : 替换指定字符串
+* 输    入 : const char *targetstr, const char *newstr
+* 输    出 : 无
+* 日    期 : 2020-06-26 
+*/
+
+void tstring::replace(const char *targetstr, const char *newstr)
+{
+    tstring temptstr;
+
+    //需要替换成的字符串长度
+    size_t targetlength = GetPCharLength(targetstr);
+
+    char *ptempstr1 = this->tchar;
+    char *ptempstr2 = (char *)targetstr;
+
+    while (*ptempstr1 != '\0')
+    {
+        if (*ptempstr1 == *ptempstr2)
+        {
+            ptempstr2++;
+        }
+        else
+        {
+            ptempstr2 = (char *)targetstr;
+            temptstr += *ptempstr1;
+        }
+        ptempstr1++;
+        if (targetlength == 0)
+        {
+            //需要替换成的字符串长度为0，所以不管上述匹配过程需要替换成的字符串指针是否改变，都重新指向目标字符串
+            ptempstr2 = (char *)targetstr;
+        }
+        else if (*ptempstr2 == '\0')
+        {
+            ptempstr2 = (char *)targetstr;
+            temptstr += newstr;
+        }
+    }
+
+    //释放已有内存，长度置为零,已有空间置为0，用于直接接收临时对象内容，减少浪费
+    if (this->tchar != NULL)
+    {
+        delete this->tchar;
+    }
+    this->tchar = NULL;
+    this->loglength = 0;
+    this->max_length = 0;
+
+    //将临时对象内容赋值给原有对象
+    this->tchar = temptstr.tchar;
+    this->loglength = temptstr.loglength;
+    this->max_length = temptstr.max_length;
+}
+
+/****************************************************************************
 * 函数名   : 
 * 功    能 : 重载=运行算符，使用=char*赋值
 * 输    入 : const char*
@@ -603,25 +660,7 @@ tstring tstring::operator+(const char &ch)
     char tempch[2] = {ch, '\0'};
     char *ptemp = tempch;
 
-    //创建临时对象
-    tstring tempstr;
-
-    //获得相加后的总长度
-    size_t templength = this->loglength + 1;
-
-    //检查临时对象空间是否够用
-    tempstr.checkNextMaxSizeSpace(templength);
-
-    //将相加后的总长度设为临时对象的长度
-    tempstr.loglength = templength;
-
-    //拷贝原有字符串内容
-    Strcpy(tempstr.tchar, this->tchar);
-
-    //将+后字符追加到临时对象
-    Strcat(tempstr.tchar, ptemp);
-
-    return tempstr;
+    return *this + ptemp;
 }
 
 /****************************************************************************
@@ -880,7 +919,38 @@ tstring &tstring::operator=(const std::string &stdstr)
 
 /****************************************************************************
 * 函数名   : 
-* 功    能 : 重载+=运算符,tstring+标准库std::string
+* 功    能 : 重载+运算符,=tstring+标准库std::string
+* 输    入 : onst std::string &stdstr
+* 输    出 : tstring
+* 日    期 : 2020-06-26 
+*/
+
+tstring tstring::operator+(const std::string &stdstr)
+{
+    //创建临时对象
+    tstring tempstr;
+
+    //获得相加后的总长度
+    size_t templength = stdstr.length() + this->getLength();
+
+    //检查临时对象空间是否够用
+    tempstr.checkNextMaxSizeSpace(tempstr.loglength);
+
+    //将相加后的总长度设为临时对象的长度
+    tempstr.loglength = templength;
+
+    //将+前字符串拷贝纸临时对象
+    Strcpy(tempstr.tchar, this->tchar);
+
+    //将+后char*追加到临时对象
+    Strcat(tempstr.tchar, stdstr.c_str());
+
+    return tempstr;
+}
+
+/****************************************************************************
+* 函数名   : 
+* 功    能 : 重载+=运算符,tstring+=标准库std::string
 * 输    入 : 
 * 输    出 : 
 * 日    期 : 2020-06-25 
@@ -913,4 +983,33 @@ tstring &tstring::operator+=(const std::string &stdstr)
 char &tstring::operator[](int move)
 {
     return *(this->tchar + move);
+}
+
+/****************************************************************************
+* 函数名   : 
+* 功    能 : 重载+=运算符，trstring加char
+* 输    入 : const char &ch
+* 输    出 : tstring
+* 日    期 : 2020-06-26 
+*/
+
+tstring &tstring::operator+=(const char &ch)
+{
+    //将char转化为指针类型
+    char tempch[2] = {ch, '\0'};
+    char *ptemp = tempch;
+
+    //获得相加后的总长度
+    size_t templength = this->loglength + 1;
+
+    //检查临时对象空间是否够用
+    this->checkNextMaxSizeSpace(templength);
+
+    //将相加后的总长度设为对象的长度
+    this->loglength = templength;
+
+    //将+后字符追加到对象
+    Strcat(this->tchar, ptemp);
+
+    return *this;
 }
