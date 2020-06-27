@@ -102,3 +102,29 @@
     template <typename Type>
     tstring toTstring(const Type &val);
 ```
+
+## v0.0.2.3
+
+### 修改
+
+``` 
+ //将基本类型参数内容转化为tstring
+template <typename Type>
+tstring toTstring(const Type &val)
+{
+    //只允许值类型进行转化
+    static_assert(std::is_arithmetic<Type>::value, "It's not a numeric type");
+}
+```
+
+### 增加
+
+``` 
+    //返回最后一个字符
+    char back();
+    //追加字符串
+    tstring &append(const char *str);
+```
+*** 
+<font size=5 color=blue>至此基础功能接近完成，后续继续扩大可使用性</font>
+***

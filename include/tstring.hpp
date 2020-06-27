@@ -91,6 +91,14 @@ public:
     //替换指定字符串
     void replace(const char *targetstr, const char *newstr);
 
+    //返回最后一个字符
+    char back();
+    
+
+    //追加字符串
+    tstring &append(const char *str);
+
+
 public:
     //重载=运行算符，使用=char*赋值
     tstring &operator=(const char *str);
@@ -140,7 +148,7 @@ tstring toTstring(const Type &val);
 
 /****************************************************************************
 * 函数名   : 
-* 功    能 : 将int参数内容转化为tstring
+* 功    能 : 将参数内容转化为tstring
 * 输    入 : typename val
 * 输    出 : tstring
 * 日    期 : 2020-06-26 
@@ -149,25 +157,7 @@ tstring toTstring(const Type &val);
 template <typename Type>
 tstring toTstring(const Type &val)
 {
-    static_assert(std::is_same<Type, char>::value ||
-                      std::is_same<Type, unsigned char>::value ||
-                      std::is_same<Type, signed char>::value ||
-                      std::is_same<Type, int>::value ||
-                      std::is_same<Type, unsigned int>::value ||
-                      std::is_same<Type, signed int>::value ||
-                      std::is_same<Type, short int>::value ||
-                      std::is_same<Type, unsigned short int>::value ||
-                      std::is_same<Type, signed short int>::value ||
-                      std::is_same<Type, long int>::value ||
-                      std::is_same<Type, signed long int>::value ||
-                      std::is_same<Type, unsigned long int>::value ||
-                      std::is_same<Type, long>::value ||
-                      std::is_same<Type, long long>::value ||
-                      std::is_same<Type, double>::value ||
-                      std::is_same<Type, long double>::value ||
-                      std::is_same<Type, float>::value ||
-                      std::is_same<Type, short>::value,
-                  "Unsupported types");
+    static_assert(std::is_arithmetic<Type>::value, "It's not a numeric type");
     std::stringstream ss;
     ss << val;
     tstring temptstr;

@@ -548,6 +548,35 @@ void tstring::replace(const char *targetstr, const char *newstr)
 }
 
 /****************************************************************************
+* 函数名   : back
+* 功    能 : 返回最后一个字符
+* 输    入 : 无
+* 输    出 : char
+* 日    期 : 2020-06-27 
+*/
+char tstring::back()
+{
+    if (this->loglength != 0)
+    {
+        return *(this->tchar + this->loglength - 1);
+    }
+    return '\0';
+}
+
+/****************************************************************************
+* 函数名   : append
+* 功    能 : 追加字符串
+* 输    入 : char*
+* 输    出 : tstring &
+* 日    期 : 2020-06-27 
+*/
+tstring &tstring::append(const char *str)
+{
+    *this += str;
+    return *this;
+}
+
+/****************************************************************************
 * 函数名   : 
 * 功    能 : 重载=运行算符，使用=char*赋值
 * 输    入 : const char*
@@ -844,6 +873,7 @@ std::istream &operator>>(std::istream &is, tstring &tstr)
     }
     //每读取完一位都会++，所以-1回至实际长度
     tstr.loglength = templength - 1;
+    return is;
 }
 
 /****************************************************************************
