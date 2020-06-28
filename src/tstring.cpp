@@ -1,6 +1,6 @@
 #include "tstring.hpp"
 #include <iostream>
-
+#include "tstringiterator.hpp"
 #include "MD5.hpp"
 
 /****************************************************************************
@@ -574,6 +574,84 @@ tstring &tstring::append(const char *str)
 {
     *this += str;
     return *this;
+}
+
+/****************************************************************************
+* 函数名   : 
+* 功    能 : 获得BASE64编码
+* 输    入 : 无
+* 输    出 : tstring
+* 日    期 : 2020-06-28 
+*/
+
+tstring tstring::getEncodeBase64()
+{
+    return Encode(this->cstr(), this->getLength());
+}
+
+/****************************************************************************
+* 函数名   : 
+* 功    能 : 解BASE64码
+* 输    入 : 无
+* 输    出 : tstring
+* 日    期 : 2020-06-28 
+*/
+
+tstring tstring::getDecodeBase64()
+{
+    return Decode(this->cstr(), this->getLength());
+}
+
+/****************************************************************************
+* 函数名   : begin
+* 功    能 : 起始迭代器
+* 输    入 : 无
+* 输    出 : tstringiterator
+* 日    期 : 2020-06-28 
+*/
+tstringiterator tstring::begin()
+{
+    return iterator(this->tchar);
+}
+
+/****************************************************************************
+* 函数名   : end
+* 功    能 : 结尾迭代器
+* 输    入 : 无
+* 输    出 : tstringiterator
+* 日    期 : 2020-06-28 
+*/
+tstringiterator tstring::end()
+{
+    return iterator(this->tchar + this->loglength + 1);
+}
+/****************************************************************************
+* 函数名   : rbegin()
+* 功    能 : 返回反向迭代器起始迭代器
+* 输    入 : 无
+* 输    出 : reverse_tstringiterator
+* 日    期 : 2020-06-28 
+*/
+reverse_tstringiterator tstring::rbegin()
+{
+    iterator tempiter;
+    tempiter = this->end() - 1;
+    return reverse_iterator(tempiter);
+}
+
+/****************************************************************************
+* 函数名   : rend()
+* 功    能 : 返回反向迭代器末尾迭代器
+* 输    入 : 无
+* 输    出 : reverse_tstringiterator
+* 日    期 : 2020-06-28 
+*/
+
+reverse_tstringiterator tstring::rend()
+{
+    iterator tempiter;
+    tempiter = this->begin() - 1;
+    return reverse_iterator(tempiter);
 }
 
 /****************************************************************************

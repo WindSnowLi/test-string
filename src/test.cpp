@@ -129,8 +129,21 @@ int main(int argc, char const *argv[])
     cout << test30 << endl;
 
     cout << test30.back() << endl;
+    for (auto iter = test19.begin(); iter != test19.end(); iter++)
+    {
+        cout << *iter << " ";
+    }
+    cout << endl;
+    for (auto iter = test19.rbegin(); iter != test19.rend(); iter++)
+    {
+        cout << *iter << " ";
+    }
 
-    cout << "end" << endl;
+    tstring test31 = "0000ILoveYouILoveYouILoveYouILoveYouILoveYouILoveYouILoveYouILoveYou0000";
+    tstring test32 = test31.getEncodeBase64();
+    cout << test32 << endl;
+    cout << test32.getDecodeBase64() << endl;
+    cout << endl;
     getchar();
     return 0;
 }
