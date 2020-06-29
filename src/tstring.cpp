@@ -4,22 +4,22 @@
 #include "MD5.hpp"
 
 /****************************************************************************
-* 函数名   : tstring()
-* 功    能 : 无参数初始化
-* 输    入 : 无
-* 输    出 : 无
-* 日    期 : 2020-06-18 
+* Name     : tstring()
+* Describe :无参数初始化
+* parameter: 无
+* @return  : 无
+* date     : 2020-06-18 
 */
 tstring::tstring()
 {
 }
 
 /****************************************************************************
-* 函数名   : tstring(const char *str)
-* 功    能 : 构造函数初始化
-* 输    入 : const char *
-* 输    出 : 无
-* 日    期 : 2020-06-18 
+* Name     : tstring(const char *str)
+* Describe :构造函数初始化
+* parameter: const char *
+* @return  : 无
+* date     : 2020-06-18 
 */
 //2020/06/20 windSnowLi 顺带为对象内置长度赋值
 //v0.0.2 2020/06/23 windSnowLi 修改空间申请定义
@@ -36,11 +36,11 @@ tstring::tstring(const char *str)
 }
 
 /****************************************************************************
-* 函数名   : 拷贝构造函数
-* 功    能 : 复制对象
-* 输    入 : tstring &tstr
-* 输    出 : 无
-* 日    期 : 2020-06-18 
+* Name     : 拷贝构造函数
+* Describe :复制对象
+* parameter: tstring &tstr
+* @return  : 无
+* date     : 2020-06-18 
 */
 //2020/06/20 windSnowLi 顺带为对象内置长度赋值
 //v0.0.2 2020/06/23 windSnowLi 修改空间申请定义
@@ -55,11 +55,11 @@ tstring::tstring(const tstring &tstr)
 }
 
 /****************************************************************************
-* 函数名   : 使用std::string的构造函数
-* 功    能 : 使用标准库std::string初始化
-* 输    入 : const std::string &stdstr
-* 输    出 : 
-* 日    期 : 2020-06-25 
+* Name     : 使用std::string的构造函数
+* Describe :使用标准库std::string初始化
+* parameter: const std::string &stdstr
+* @return  : 
+* date     : 2020-06-25 
 */
 
 tstring::tstring(const std::string &stdstr)
@@ -72,11 +72,11 @@ tstring::tstring(const std::string &stdstr)
 }
 
 /****************************************************************************
-* 函数名   : 析构函数
-* 功    能 : 释放对象时释放所属资源
-* 输    入 : 无
-* 输    出 : 无
-* 日    期 : 2020-06-18 
+* Name     : 析构函数
+* Describe :释放对象时释放所属资源
+* parameter: 无
+* @return  : 无
+* date     : 2020-06-18 
 */
 tstring::~tstring()
 {
@@ -118,11 +118,11 @@ void tstring::Strcpy(char *newstr, const char *oldstr)
 }
 
 /****************************************************************************
-    * 函数名   : cstr
-    * 功    能 : 获取char*指针
-    * 输    入 : 
-    * 输    出 : char*
-    * 日    期 : 2020-06-18 
+    * Name     : cstr
+    * Describe :获取char*指针
+    * parameter: 
+    * @return  : char*
+    * date     : 2020-06-18 
     */
 const char *tstring::cstr()
 {
@@ -130,11 +130,11 @@ const char *tstring::cstr()
 }
 
 /****************************************************************************
-* 函数名   : Strcat
-* 功    能 : 连接字符串
-* 输    入 : char *before, char *after
-* 输    出 : 无
-* 日    期 : 2020-06-18 
+* Name     : Strcat
+* Describe :连接字符串
+* parameter: char *before, char *after
+* @return  : 无
+* date     : 2020-06-18 
 */
 //2020/6/19 windSnowLi 加入指针是否为空的判断
 void tstring::Strcat(char *before, const char *after)
@@ -157,11 +157,11 @@ void tstring::Strcat(char *before, const char *after)
 }
 
 /****************************************************************************
-* 函数名   : compare
-* 功    能 : 比较两个对象是否相等
-* 输    入 : const tstring &tstr
-* 输    出 : bool
-* 日    期 : 2020-06-18 
+* Name     : compare
+* Describe :比较两个对象是否相等
+* parameter: const tstring &tstr
+* @return  : bool
+* date     : 2020-06-18 
 */
 //v0.0.2  2020/06/23 windSnowLi 优先进行长度匹配
 bool tstring::compare(const tstring &tstr)
@@ -174,11 +174,11 @@ bool tstring::compare(const tstring &tstr)
 }
 
 /****************************************************************************
-* 函数名   : equalsIgnoreCase
-* 功    能 : 比较内容是否相等，忽略大小写
-* 输    入 : const tstring &tstr
-* 输    出 : bool
-* 日    期 : 2020-06-18 
+* Name     : equalsIgnoreCase
+* Describe :比较内容是否相等，忽略大小写
+* parameter: const tstring &tstr
+* @return  : bool
+* date     : 2020-06-18 
 */
 //2020/6/19 windSnowLi 加入指针是否为空的判断
 //v0.0.2  2020/06/23 windSnowLi 优先进行长度匹配
@@ -214,11 +214,11 @@ bool tstring::compareIgnoreCase(const tstring &tstr)
 }
 
 /****************************************************************************
-* 函数名   : Strcmp
-* 功    能 : 比较字符串是否相等
-* 输    入 : const char *str1, const char *str2
-* 输    出 : bool
-* 日    期 : 2020-06-18 
+* Name     : Strcmp
+* Describe :比较字符串是否相等
+* parameter: const char *str1, const char *str2
+* @return  : bool
+* date     : 2020-06-18 
 */
 //2020/6/19 windSnowLi 加入指针是否为空的判断
 bool tstring::Strcmp(const char *str1, const char *str2)
@@ -246,11 +246,11 @@ bool tstring::Strcmp(const char *str1, const char *str2)
 }
 
 /****************************************************************************
-* 函数名   : Strlwr
-* 功    能 : 将字符串转化为小写
-* 输    入 : char *str
-* 输    出 : 无
-* 日    期 : 2020-06-18 
+* Name     : Strlwr
+* Describe :将字符串转化为小写
+* parameter: char *str
+* @return  : 无
+* date     : 2020-06-18 
 */
 //2020/6/19 windSnowLi 加入指针是否为空的判断
 void tstring::Strlwr(char *str)
@@ -269,11 +269,11 @@ void tstring::Strlwr(char *str)
 }
 
 /****************************************************************************
-* 函数名   : Strupr
-* 功    能 :转化为大写 
-* 输    入 : char *str
-* 输    出 : 无
-* 日    期 : 2020-06-20 
+* Name     : Strupr
+* function :转化为大写 
+* parameter: char *str
+* @return  : 无
+* date     : 2020-06-20 
 */
 
 void tstring::Strupr(char *str)
@@ -292,11 +292,39 @@ void tstring::Strupr(char *str)
 }
 
 /****************************************************************************
-* 函数名   : checkNextMaxSizeSpace
-* 功    能 : 检查下一次需要的空间是否需要变动，如果变动，将老信息转存至新空间并将tstr新空间指针,否则不做改变,参数为要接受的新的字符串长度
-* 输    入 : char *newstr
-* 输    出 : char *
-* 日    期 : 2020-06-23 
+* Name     : Strinsert
+* Describe : Inserts the secondary string at the specified position of the main string and copies the contents to the target string
+* 描     述: 在主字符串的指定位置插入副字符串， 并把内容拷贝到目标字符串
+* parameter: char *mainstr, const char *insertstr, char *targetstr, size_t site
+* @return  : 无
+* date     : 2020-06-29 
+*/
+void tstring::Strinsert(char *mainstr, const char *insertstr, char *targetstr, size_t site)
+{
+    char *tempinsertstr = (char *)insertstr;
+    int i = 0;
+    for (i = 0; i < site; i++, mainstr++)
+    {
+        targetstr[i] = *mainstr;
+    }
+
+    for (int j = 0; tempinsertstr[j] != '\0'; j++, i++)
+    {
+        targetstr[i] = tempinsertstr[j];
+    }
+
+    for (; *mainstr != '\0'; mainstr++, i++)
+    {
+        targetstr[i] = *mainstr;
+    }
+}
+
+/****************************************************************************
+* Name     : checkNextMaxSizeSpace
+* Describe :检查下一次需要的空间是否需要变动，如果变动，将老信息转存至新空间并将tstr新空间指针,否则不做改变,参数为要接受的新的字符串长度
+* parameter: char *newstr
+* @return  : char *
+* date     : 2020-06-23 
 */
 void tstring::checkNextMaxSizeSpace(size_t newstrsize)
 {
@@ -324,11 +352,11 @@ void tstring::checkNextMaxSizeSpace(size_t newstrsize)
 }
 
 /****************************************************************************
-* 函数名   : charAt
-* 功    能 : 获取字符串上某个字符
-* 输    入 : int index
-* 输    出 : char
-* 日    期 : 2020-06-18 
+* Name     : charAt
+* Describe :获取字符串上某个字符
+* parameter: int index
+* @return  : char
+* date     : 2020-06-18 
 */
 
 char tstring::charAt(int index)
@@ -337,11 +365,11 @@ char tstring::charAt(int index)
 }
 
 /****************************************************************************
-* 函数名   : isEmpty
-* 功    能 : 判断字符串是否为空
-* 输    入 : 无
-* 输    出 : bool
-* 日    期 : 2020-06-18 
+* Name     : isEmpty
+* Describe :判断字符串是否为空
+* parameter: 无
+* @return  : bool
+* date     : 2020-06-18 
 */
 //v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数
 bool tstring::isEmpty()
@@ -350,11 +378,11 @@ bool tstring::isEmpty()
 }
 
 /****************************************************************************
-* 函数名   : find
-* 功    能 : 查找字符串，返回首个字符位置,int参数为返回后的位置偏移量
-* 输    入 : char *newstr, size_t move=0
-* 输    出 : size_t
-* 日    期 : 2020-06-18 
+* Name     : find
+* Describe :查找字符串，返回首个字符位置,int参数为返回后的位置偏移量
+* parameter: char *newstr, size_t move=0
+* @return  : size_t
+* date     : 2020-06-18 
 */
 //2020/6/19 windSnowLi 加入指针是否为空的判断
 size_t tstring::find(const char *targetstr, size_t move)
@@ -386,11 +414,11 @@ size_t tstring::find(const char *targetstr, size_t move)
 }
 
 /****************************************************************************
-* 函数名   : toLowerCase
-* 功    能 : 将字符串全部转化为小写
-* 输    入 : 无
-* 输    出 : 无
-* 日    期 : 2020-06-19 
+* Name     : toLowerCase
+* Describe :将字符串全部转化为小写
+* parameter: 无
+* @return  : 无
+* date     : 2020-06-19 
 */
 tstring &tstring::toLowerCase()
 {
@@ -399,11 +427,11 @@ tstring &tstring::toLowerCase()
 }
 
 /****************************************************************************
-* 函数名   : toUpperCase
-* 功    能 : 将字符串全部转化为大写
-* 输    入 : 无
-* 输    出 : tstring&
-* 日    期 : 2020-06-20 
+* Name     : toUpperCase
+* Describe :将字符串全部转化为大写
+* parameter: 无
+* @return  : tstring&
+* date     : 2020-06-20 
 */
 tstring &tstring::toUpperCase()
 {
@@ -412,11 +440,11 @@ tstring &tstring::toUpperCase()
 }
 
 /****************************************************************************
-* 函数名   : getLength
-* 功    能 : 返回对象内置的长度
-* 输    入 : 无
-* 输    出 : size_t
-* 日    期 : 2020-06-20 
+* Name     : getLength
+* Describe :返回对象内置的长度
+* parameter: 无
+* @return  : size_t
+* date     : 2020-06-20 
 */
 //2020/06/23 windSnowLi 将名称更改为getLength()
 size_t tstring::getLength()
@@ -425,11 +453,11 @@ size_t tstring::getLength()
 }
 
 /****************************************************************************
-* 函数名   : 
-* 功    能 : 清空函数，将字符串信息清空
-* 输    入 : 无
-* 输    出 : 自身引用
-* 日    期 : 2020-06-21 
+* Name     : 
+* Describe :清空函数，将字符串信息清空
+* parameter: 无
+* @return  : 自身引用
+* date     : 2020-06-21 
 */
 tstring &tstring::clear()
 {
@@ -444,11 +472,11 @@ tstring &tstring::clear()
 }
 
 /****************************************************************************
-* 函数名   : swap
-* 功    能 : 交换函数，交换两个tstring的信息
-* 输    入 : tstring &
-* 输    出 : 无
-* 日    期 : 2020-06-21 
+* Name     : swap
+* Describe :交换函数，交换两个tstring的信息
+* parameter: tstring &
+* @return  : 无
+* date     : 2020-06-21 
 */
 void tstring::swap(tstring &tstr)
 {
@@ -466,11 +494,11 @@ void tstring::swap(tstring &tstr)
 }
 
 /****************************************************************************
-* 函数名   : getMaxSize()
-* 功    能 : 返回当前空间最大长度
-* 输    入 : 无
-* 输    出 : size_t
-* 日    期 : 2020-06-23 
+* Name     : getMaxSize()
+* Describe :返回当前空间最大长度
+* parameter: 无
+* @return  : size_t
+* date     : 2020-06-23 
 */
 
 size_t tstring::getMaxSize()
@@ -479,11 +507,11 @@ size_t tstring::getMaxSize()
 }
 
 /****************************************************************************
-* 函数名   : getMD5()
-* 功    能 : 摘要信息 MD5
-* 输    入 : 无
-* 输    出 : tstring
-* 日    期 : 2020-06-24 
+* Name     : getMD5()
+* Describe :摘要信息 MD5
+* parameter: 无
+* @return  : tstring
+* date     : 2020-06-24 
 */
 tstring tstring::getMD5()
 {
@@ -491,11 +519,11 @@ tstring tstring::getMD5()
 }
 
 /****************************************************************************
-* 函数名   : replace
-* 功    能 : 替换指定字符串
-* 输    入 : const char *targetstr, const char *newstr
-* 输    出 : 无
-* 日    期 : 2020-06-26 
+* Name     : replace
+* Describe :替换指定字符串
+* parameter: const char *targetstr, const char *newstr
+* @return  : 无
+* date     : 2020-06-26 
 */
 
 void tstring::replace(const char *targetstr, const char *newstr)
@@ -548,11 +576,11 @@ void tstring::replace(const char *targetstr, const char *newstr)
 }
 
 /****************************************************************************
-* 函数名   : back
-* 功    能 : 返回最后一个字符
-* 输    入 : 无
-* 输    出 : char
-* 日    期 : 2020-06-27 
+* Name     : back
+* Describe :返回最后一个字符
+* parameter: 无
+* @return  : char
+* date     : 2020-06-27 
 */
 char tstring::back()
 {
@@ -564,11 +592,11 @@ char tstring::back()
 }
 
 /****************************************************************************
-* 函数名   : append
-* 功    能 : 追加字符串
-* 输    入 : char*
-* 输    出 : tstring &
-* 日    期 : 2020-06-27 
+* Name     : append
+* Describe :追加字符串
+* parameter: char*
+* @return  : tstring &
+* date     : 2020-06-27 
 */
 tstring &tstring::append(const char *str)
 {
@@ -577,11 +605,11 @@ tstring &tstring::append(const char *str)
 }
 
 /****************************************************************************
-* 函数名   : 
-* 功    能 : 获得BASE64编码
-* 输    入 : 无
-* 输    出 : tstring
-* 日    期 : 2020-06-28 
+* Name     : 
+* Describe :获得BASE64编码
+* parameter: 无
+* @return  : tstring
+* date     : 2020-06-28 
 */
 
 tstring tstring::getEncodeBase64()
@@ -590,11 +618,11 @@ tstring tstring::getEncodeBase64()
 }
 
 /****************************************************************************
-* 函数名   : 
-* 功    能 : 解BASE64码
-* 输    入 : 无
-* 输    出 : tstring
-* 日    期 : 2020-06-28 
+* Name     : 
+* Describe :解BASE64码
+* parameter: 无
+* @return  : tstring
+* date     : 2020-06-28 
 */
 
 tstring tstring::getDecodeBase64()
@@ -603,11 +631,125 @@ tstring tstring::getDecodeBase64()
 }
 
 /****************************************************************************
-* 函数名   : begin
-* 功    能 : 起始迭代器
-* 输    入 : 无
-* 输    出 : tstringiterator
-* 日    期 : 2020-06-28 
+* Name     : insert
+* Describe : Inserts the parameter string at the specified location
+* 描     述: 将参数字符串插入指定位置
+* parameter: const tstring tstr, size_t site
+* @return  : tstring&
+* date     : 2020-06-29 
+*/
+tstring &tstring::insert(const tstring &tstr, size_t site)
+{
+    tstring temptstr;
+    /*
+    *   字符插入后的长度
+    *   The length of the inserted character
+    */
+    size_t templength = this->loglength + tstr.loglength;
+
+    /*
+    *   检查或扩容扩容临时对象空间
+    *   Check or expand temporary object space
+    */
+    temptstr.checkNextMaxSizeSpace(templength);
+
+    /*
+    *   使用内置的Strinsert将数据合并到临时tstring对象 
+    *   Use the built-in Strinsert to merge the data into a temporary TString object
+    */
+    Strinsert(this->tchar, tstr.tchar, temptstr.tchar, site);
+
+    /*
+    *   将临时字符串输入到本tstring对象 
+    *   Enter a temporary string into this TString object
+    */
+    *this << temptstr;
+
+    return *this;
+}
+
+/****************************************************************************
+* Name     : insert
+* Describe : Inserts the parameter string at the specified location
+* 描     述: 将参数字符串插入指定位置
+* parameter: const char *str, size_t site
+* @return  : tstring&
+* date     : 2020-06-29 
+*/
+tstring &tstring::insert(const char *str, size_t site)
+{
+    tstring temptstr;
+    /*
+    *   字符插入后的长度
+    *   The length of the inserted character
+    */
+    size_t templength = this->loglength + GetPCharLength(str);
+
+    /*
+    *   检查或扩容扩容临时对象空间
+    *   Check or expand temporary object space
+    */
+    temptstr.checkNextMaxSizeSpace(templength);
+
+    /*
+    *   使用内置的Strinsert将数据合并到临时tstring对象 
+    *   Use the built-in Strinsert to merge the data into a temporary TString object
+    */
+    Strinsert(this->tchar, str, temptstr.tchar, site);
+
+    /*
+    *   将临时字符串输入到本tstring对象 
+    *   Enter a temporary string into this TString object
+    */
+    *this << temptstr;
+
+    return *this;
+}
+
+/****************************************************************************
+* Name     : insert
+* Describe : Inserts the parameter string at the specified location
+* 描     述: 将参数字符串插入指定位置
+* parameter: const std::string &str, size_t site
+* @return  : tstring&
+* date     : 2020-06-29 
+*/
+tstring &tstring::insert(const std::string &str, size_t site)
+{
+    tstring temptstr;
+    /*
+    *   字符插入后的长度
+    *   The length of the inserted character
+    */
+    size_t templength = this->loglength + str.length();
+
+    /*
+    *   检查或扩容扩容临时对象空间
+    *   Check or expand temporary object space
+    */
+    temptstr.checkNextMaxSizeSpace(templength);
+
+    /*
+    *   使用内置的Strinsert将数据合并到临时tstring对象 
+    *   Use the built-in Strinsert to merge the data into a temporary TString object
+    */
+    Strinsert(this->tchar, str.c_str(), temptstr.tchar, site);
+
+    /*
+    *   将临时字符串输入到本tstring对象 
+    *   Enter a temporary string into this TString object
+    */
+    *this << temptstr;
+
+    return *this;
+}
+
+/****************************************************************************
+* Name     : begin
+* Describe :起始迭代器
+* parameter: 无
+* @return  : tstringiterator
+* date     : 2020-06-28 
 */
 tstringiterator tstring::begin()
 {
@@ -615,22 +757,22 @@ tstringiterator tstring::begin()
 }
 
 /****************************************************************************
-* 函数名   : end
-* 功    能 : 结尾迭代器
-* 输    入 : 无
-* 输    出 : tstringiterator
-* 日    期 : 2020-06-28 
+* Name     : end
+* Describe :结尾迭代器
+* parameter: 无
+* @return  : tstringiterator
+* date     : 2020-06-28 
 */
 tstringiterator tstring::end()
 {
     return iterator(this->tchar + this->loglength + 1);
 }
 /****************************************************************************
-* 函数名   : rbegin()
-* 功    能 : 返回反向迭代器起始迭代器
-* 输    入 : 无
-* 输    出 : reverse_tstringiterator
-* 日    期 : 2020-06-28 
+* Name     : rbegin()
+* Describe :返回反向迭代器起始迭代器
+* parameter: 无
+* @return  : reverse_tstringiterator
+* date     : 2020-06-28 
 */
 reverse_tstringiterator tstring::rbegin()
 {
@@ -640,11 +782,11 @@ reverse_tstringiterator tstring::rbegin()
 }
 
 /****************************************************************************
-* 函数名   : rend()
-* 功    能 : 返回反向迭代器末尾迭代器
-* 输    入 : 无
-* 输    出 : reverse_tstringiterator
-* 日    期 : 2020-06-28 
+* Name     : rend()
+* Describe :返回反向迭代器末尾迭代器
+* parameter: 无
+* @return  : reverse_tstringiterator
+* date     : 2020-06-28 
 */
 
 reverse_tstringiterator tstring::rend()
@@ -655,11 +797,11 @@ reverse_tstringiterator tstring::rend()
 }
 
 /****************************************************************************
-* 函数名   : 
-* 功    能 : 重载=运行算符，使用=char*赋值
-* 输    入 : const char*
-* 输    出 : tstring对象
-* 日    期 : 2020-06-18 
+* Name     : 
+* Describe :重载=运行算符，使用=char*赋值
+* parameter: const char*
+* @return  : tstring对象
+* date     : 2020-06-18 
 */
 //2020/06/16 windsnow 改为返回tstring自身引用
 //2020/06/20 windSnowLi 顺带为对象内置长度赋值
@@ -690,11 +832,11 @@ tstring &tstring::operator=(const char *str)
 }
 
 /****************************************************************************
-* 函数名   : 
-* 功    能 : 重载+运算符，trstring结尾续加字符串
-* 输    入 : const char *str
-* 输    出 : trstring对象
-* 日    期 : 2020-06-18 
+* Name     : 
+* Describe :重载+运算符，trstring结尾续加字符串
+* parameter: const char *str
+* @return  : trstring对象
+* date     : 2020-06-18 
 */
 //v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数
 //v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数，更改空间申请方式
@@ -722,11 +864,11 @@ tstring tstring::operator+(const char *str)
 }
 
 /****************************************************************************
-* 函数名   : 
-* 功    能 : 重载+运算符，trstring对象相加
-* 输    入 : 
-* 输    出 : 
-* 日    期 : 2020-06-18 
+* Name     : 
+* Describe :重载+运算符，trstring对象相加
+* parameter: 
+* @return  : 
+* date     : 2020-06-18 
 */
 //v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数
 //v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数，更改空间申请方式
@@ -754,11 +896,11 @@ tstring tstring::operator+(const tstring &tstr)
 }
 
 /****************************************************************************
-* 函数名   : 
-* 功    能 : 重载+运算符，trstring加char
-* 输    入 : const char &tempch
-* 输    出 : tstring
-* 日    期 : 2020-06-20 
+* Name     : 
+* Describe :重载+运算符，trstring加char
+* parameter: const char &tempch
+* @return  : tstring
+* date     : 2020-06-20 
 */
 //v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数，更改空间申请方式
 tstring tstring::operator+(const char &ch)
@@ -771,11 +913,11 @@ tstring tstring::operator+(const char &ch)
 }
 
 /****************************************************************************
-* 函数名   : 
-* 功    能 : 重载<<运算符，trstring对象赋值
-* 输    入 : tstring &tstr
-* 输    出 : 无
-* 日    期 : 2020-06-19 
+* Name     : 
+* Describe :重载<<运算符，trstring对象赋值
+* parameter: tstring &tstr
+* @return  : 无
+* date     : 2020-06-19 
 */
 //2020/06/16 windsnow 改为返回tstring自身引用
 //v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数
@@ -805,11 +947,11 @@ tstring &tstring::operator>>(tstring &tstr)
 }
 
 /****************************************************************************
-* 函数名   : 
-* 功    能 : 重载<<运算符，trstring对象赋值
-* 输    入 : tstring &tstr
-* 输    出 : 无
-* 日    期 : 2020-06-19 
+* Name     : 
+* Describe :重载<<运算符，trstring对象赋值
+* parameter: tstring &tstr
+* @return  : 无
+* date     : 2020-06-19 
 */
 //2020/06/16 windsnow 改为返回tstring自身引用
 //v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数
@@ -838,11 +980,11 @@ tstring &tstring::operator<<(tstring &tstr)
 }
 
 /****************************************************************************
-* 函数名   : 
-* 功    能 : 重载<<运算符，trstring对象赋值
-* 输    入 : const char *str
-* 输    出 : 无
-* 日    期 : 2020-06-19 
+* Name     : 
+* Describe :重载<<运算符，trstring对象赋值
+* parameter: const char *str
+* @return  : 无
+* date     : 2020-06-19 
 */
 //2020/06/16 windsnow 改为返回tstring自身引用
 //v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数
@@ -874,11 +1016,11 @@ tstring &tstring::operator<<(const char *str)
 }
 
 /****************************************************************************
-* 函数名   : 
-* 功    能 : 重载+=运算符，trstring对象相加
-* 输    入 : const tstring &tstr
-* 输    出 : 无
-* 日    期 : 2020-06-19 
+* Name     : 
+* Describe :重载+=运算符，trstring对象相加
+* parameter: const tstring &tstr
+* @return  : 无
+* date     : 2020-06-19 
 */
 //2020/06/20 windSnowLi 顺带为对象内置长度赋值
 //v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数
@@ -901,11 +1043,11 @@ tstring &tstring::operator+=(const tstring &tstr)
 }
 
 /****************************************************************************
-* 函数名   : 
-* 功    能 : 友元fstream部分函数
-* 输    入 : ostream &os, const tstring &t
-* 输    出 : ostream&
-* 日    期 : 2020-06-19 
+* Name     : 
+* Describe :友元fstream部分函数
+* parameter: ostream &os, const tstring &t
+* @return  : ostream&
+* date     : 2020-06-19 
 */
 //2020/06/23 windSnowLi 判断是否为空指针
 std::ostream &operator<<(std::ostream &os, const tstring &tstr)
@@ -917,11 +1059,11 @@ std::ostream &operator<<(std::ostream &os, const tstring &tstr)
     return os;
 }
 /****************************************************************************
-* 函数名   : 
-* 功    能 : 友元istream >>运算符
-* 输    入 : std::istream &is, const tstring &tstr
-* 输    出 : 无
-* 日    期 : 2020-06-19 
+* Name     : 
+* Describe :友元istream >>运算符
+* parameter: std::istream &is, const tstring &tstr
+* @return  : 无
+* date     : 2020-06-19 
 */
 //2020/06/20 windSnowLi 顺带为对象内置长度赋值
 //v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数，更改空间申请方式
@@ -955,11 +1097,11 @@ std::istream &operator>>(std::istream &is, tstring &tstr)
 }
 
 /****************************************************************************
-* 函数名   : 
-* 功    能 : 重载+=运算符，trstring加char*
-* 输    入 : const char *str
-* 输    出 : tstring &
-* 日    期 : 2020-06-19 
+* Name     : 
+* Describe :重载+=运算符，trstring加char*
+* parameter: const char *str
+* @return  : tstring &
+* date     : 2020-06-19 
 */
 //2020/06/20 windSnowLi 顺带为对象内置长度赋值
 //v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数
@@ -983,11 +1125,11 @@ tstring &tstring::operator+=(const char *str)
 }
 
 /****************************************************************************
-* 函数名   : 
-* 功    能 : 重载==运算符，判断两trstring对象是否相等
-* 输    入 : tstring &tstr
-* 输    出 : bool
-* 日    期 : 2020-06-20 
+* Name     : 
+* Describe :重载==运算符，判断两trstring对象是否相等
+* parameter: tstring &tstr
+* @return  : bool
+* date     : 2020-06-20 
 */
 bool tstring::operator==(const tstring &tstr)
 {
@@ -995,11 +1137,11 @@ bool tstring::operator==(const tstring &tstr)
 }
 
 /****************************************************************************
-* 函数名   : 
-* 功    能 : 重载=运算符,使用标准库std::string赋值
-* 输    入 : 
-* 输    出 : 
-* 日    期 : 2020-06-25 
+* Name     : 
+* Describe :重载=运算符,使用标准库std::string赋值
+* parameter: 
+* @return  : 
+* date     : 2020-06-25 
 */
 tstring &tstring::operator=(const std::string &stdstr)
 {
@@ -1026,11 +1168,11 @@ tstring &tstring::operator=(const std::string &stdstr)
 }
 
 /****************************************************************************
-* 函数名   : 
-* 功    能 : 重载+运算符,=tstring+标准库std::string
-* 输    入 : onst std::string &stdstr
-* 输    出 : tstring
-* 日    期 : 2020-06-26 
+* Name     : 
+* Describe :重载+运算符,=tstring+标准库std::string
+* parameter: onst std::string &stdstr
+* @return  : tstring
+* date     : 2020-06-26 
 */
 
 tstring tstring::operator+(const std::string &stdstr)
@@ -1057,11 +1199,11 @@ tstring tstring::operator+(const std::string &stdstr)
 }
 
 /****************************************************************************
-* 函数名   : 
-* 功    能 : 重载+=运算符,tstring+=标准库std::string
-* 输    入 : 
-* 输    出 : 
-* 日    期 : 2020-06-25 
+* Name     : 
+* Describe :重载+=运算符,tstring+=标准库std::string
+* parameter: 
+* @return  : 
+* date     : 2020-06-25 
 */
 tstring &tstring::operator+=(const std::string &stdstr)
 {
@@ -1081,11 +1223,11 @@ tstring &tstring::operator+=(const std::string &stdstr)
 }
 
 /****************************************************************************
-* 函数名   : 
-* 功    能 : 重载[]，用于下标取值
-* 输    入 : int
-* 输    出 : char&
-* 日    期 : 2020-06-24 
+* Name     : 
+* Describe :重载[]，用于下标取值
+* parameter: int
+* @return  : char&
+* date     : 2020-06-24 
 */
 
 char &tstring::operator[](int move)
@@ -1094,11 +1236,11 @@ char &tstring::operator[](int move)
 }
 
 /****************************************************************************
-* 函数名   : 
-* 功    能 : 重载+=运算符，trstring加char
-* 输    入 : const char &ch
-* 输    出 : tstring
-* 日    期 : 2020-06-26 
+* Name     : 
+* Describe :重载+=运算符，trstring加char
+* parameter: const char &ch
+* @return  : tstring
+* date     : 2020-06-26 
 */
 
 tstring &tstring::operator+=(const char &ch)

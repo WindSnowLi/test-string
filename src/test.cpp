@@ -143,6 +143,18 @@ int main(int argc, char const *argv[])
     tstring test32 = test31.getEncodeBase64();
     cout << test32 << endl;
     cout << test32.getDecodeBase64() << endl;
+
+    tstring test33 = "123456789";
+    std::string test34 = "123456789";
+    test33.insert("abc", 5);
+    test34.insert(5, "abc");
+    cout << test33 << "\t" << test34 << endl;
+    test33.insert("abc", 0);
+    test34.insert(0, "abc");
+    cout << test33 << "\t" << test34 << endl;
+    test33.insert("abc", 100);
+    test34.insert(100, "abc");
+    cout << test33 << "\t" << test34 << endl;
     cout << endl;
     getchar();
     return 0;

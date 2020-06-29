@@ -7,6 +7,7 @@
 * 文件历史：
 * 版本号     日期         作者          说明
 * v0.0.2    2020/06/23  windSnowLi      局部算法修改
+* v0.1.0    2020/06/29  windSnowLi      添加迭代器访问
 */
 
 #ifndef TSTRING_H_
@@ -25,7 +26,7 @@ private:
     //信息存储指针
     //char *tchar = NULL;
     //2020/06/23 windSnowLi 修改为默认值128
-    char *tchar = new char[128];
+    char *tchar = new char[128]{'\0'};
 
     //字符串的长度记录
     size_t loglength = 0;
@@ -43,6 +44,12 @@ private:
     static void Strlwr(char *str);
     //转化为大写
     static void Strupr(char *str);
+
+    /*
+    *   在主字符串的指定位置插入副字符串， 并把内容拷贝到目标字符串
+    *   Inserts the secondary string at the specified position of the main string and copies the contents to the target string
+    */
+    static void Strinsert(char *mainstr, const char *insertstr, char *targetstr, size_t site);
 
     //检查下一次需要的空间是否需要变动，如果变动，将老信息转存至新空间并将tstr新空间指针,否则不做改变,参数为要接受的新的字符串长度
     void checkNextMaxSizeSpace(size_t newstrsize);
@@ -107,6 +114,15 @@ public:
 
     //解BASE64码
     tstring getDecodeBase64();
+
+    /*
+    *
+    *   将参数字符串插入指定位置
+    *   Inserts the parameter string at the specified location
+    */
+    tstring &insert(const tstring &tstr, size_t site);
+    tstring &insert(const char *str, size_t site);
+    tstring &insert(const std::string &str, size_t site);
 
     //迭代器相关
 public:
