@@ -489,6 +489,18 @@ public:
 
 ``` 
     /*
+
+    -   删除指定位置的字符 
+    -   Deletes the character at the specified position
+
+    */
+    iterator erase(iterator iter);
+```
+
+***
+
+``` 
+    /*
     *
 
     -   将参数字符串插入指定位置
@@ -498,4 +510,78 @@ public:
     tstring &insert(const tstring &tstr, size_t site);
     tstring &insert(const char *str, size_t site);
     tstring &insert(const std::string &str, size_t site);
+```
+
+***
+
+``` 
+    /*
+
+    -  比较两个正向迭代器位置，如果前者小于后者，则后者正向迭代器更接近末尾
+    -   Compare two forward iterator positions, if the former is less than the latter, the latter is closer to the end.
+
+    */
+    bool operator<(const tstringiterator &iter);
+
+    /*
+
+    -  比较两个正向迭代器位置，如果前者大于后者，则前者正向迭代器更接近末尾
+    -   Comparing two forward iterator positions, if the former is greater than the latter, the former forward iterator is closer to the end.
+
+    */
+    bool operator>(const tstringiterator &iter);
+
+    /*
+
+    -  比较两个正向迭代器位置，如果前者小于等于于后者，则返回true
+    -   Compares two forward iterator positions and returns "true" if the former is less than or equal to the latter
+
+    */
+    bool operator<=(const tstringiterator &iter);
+
+    /*
+
+    -  比较两个正向迭代器位置，如果前者大于等于于后者，则返回“true”
+    -   Compares two forward iterator positions and returns "true" if the former is greater than or equal to the latter
+
+    */
+    bool operator>=(const tstringiterator &iter);
+
+```
+
+***
+
+``` 
+
+     /*
+
+    -  比较两个反向迭代器位置，如果前者小于后者，则前者者地址值更大，此时返回true
+    -  Comparing two reverse iterator positions, if the former is less than the latter, the address value of the former is larger, and this returns true
+
+    */
+    bool operator<(const reverse_tstringiterator &iter);
+
+    /*
+
+    -   比较两个反向迭代器位置，如果前者大于后者，则后者地址值更大，此时返回true
+    -   Compares two reverse iterator positions, returning true if the former is greater than the latter, and the latter has a larger address value
+
+    */
+    bool operator>(const reverse_tstringiterator &iter);
+
+    /*
+
+    -  比较两个反向迭代器位置，如果前者小于等于后者，则前者者地址值更大，此时返回true
+    -  Comparing two reverse iterator positions, if the former is less than or equal to the latter, then the former has a larger address value and returns true
+
+    */
+    bool operator<=(const reverse_tstringiterator &iter);
+
+    /*
+
+    -  比较两个反向迭代器位置，如果前者大于等于后者，则后者地址值更大，此时返回true
+    -  Compares two reverse iterator positions, and returns true if the former is greater than or equal to the latter
+
+    */
+    bool operator>=(const reverse_tstringiterator &iter);
 ```

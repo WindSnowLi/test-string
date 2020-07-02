@@ -22,6 +22,22 @@ class tstringiterator;
 class reverse_tstringiterator;
 class tstring
 {
+
+    //迭代器相关
+public:
+    //定义正向迭代器类型
+    typedef tstringiterator iterator;
+    //起始迭代器
+    iterator begin();
+    //结尾迭代器
+    iterator end();
+    //定义反向迭代器类型
+    typedef reverse_tstringiterator reverse_iterator;
+    //返回反向迭代器起始迭代器
+    reverse_iterator rbegin();
+    //返回反向迭代器末尾迭代器
+    reverse_iterator rend();
+
 private:
     //信息存储指针
     //char *tchar = NULL;
@@ -124,20 +140,11 @@ public:
     tstring &insert(const char *str, size_t site);
     tstring &insert(const std::string &str, size_t site);
 
-    //迭代器相关
-public:
-    //定义正向迭代器类型
-    typedef tstringiterator iterator;
-    //起始迭代器
-    iterator begin();
-    //结尾迭代器
-    iterator end();
-    //定义反向迭代器类型
-    typedef reverse_tstringiterator reverse_iterator;
-    //返回反向迭代器起始迭代器
-    reverse_iterator rbegin();
-    //返回反向迭代器末尾迭代器
-    reverse_iterator rend();
+    /*
+    *   删除指定位置的字符 
+    *   Deletes the character at the specified position
+    */
+    iterator erase(iterator iter);
 
 public:
     //重载=运行算符，使用=char*赋值

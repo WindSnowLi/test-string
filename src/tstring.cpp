@@ -638,6 +638,7 @@ tstring tstring::getDecodeBase64()
 * @return  : tstring&
 * date     : 2020-06-29 
 */
+//v0.1.0.1 2020/07/02 windSnowLi 修复长度赋值时的BUG
 tstring &tstring::insert(const tstring &tstr, size_t site)
 {
     tstring temptstr;
@@ -660,6 +661,12 @@ tstring &tstring::insert(const tstring &tstr, size_t site)
     Strinsert(this->tchar, tstr.tchar, temptstr.tchar, site);
 
     /*
+    *   更新临时对象实际长度
+    *   Updates the actual length of the temporary object
+    */
+    temptstr.loglength = templength;
+
+    /*
     *   将临时字符串输入到本tstring对象 
     *   Enter a temporary string into this TString object
     */
@@ -676,6 +683,7 @@ tstring &tstring::insert(const tstring &tstr, size_t site)
 * @return  : tstring&
 * date     : 2020-06-29 
 */
+//v0.1.0.1 2020/07/02 windSnowLi 修复长度赋值时的BUG
 tstring &tstring::insert(const char *str, size_t site)
 {
     tstring temptstr;
@@ -698,6 +706,12 @@ tstring &tstring::insert(const char *str, size_t site)
     Strinsert(this->tchar, str, temptstr.tchar, site);
 
     /*
+    *   更新临时对象实际长度
+    *   Updates the actual length of the temporary object
+    */
+    temptstr.loglength = templength;
+
+    /*
     *   将临时字符串输入到本tstring对象 
     *   Enter a temporary string into this TString object
     */
@@ -714,6 +728,7 @@ tstring &tstring::insert(const char *str, size_t site)
 * @return  : tstring&
 * date     : 2020-06-29 
 */
+//v0.1.0.1 2020/07/02 windSnowLi 修复长度赋值时的BUG
 tstring &tstring::insert(const std::string &str, size_t site)
 {
     tstring temptstr;
@@ -736,12 +751,48 @@ tstring &tstring::insert(const std::string &str, size_t site)
     Strinsert(this->tchar, str.c_str(), temptstr.tchar, site);
 
     /*
+    *   更新临时对象实际长度
+    *   Updates the actual length of the temporary object
+    */
+    temptstr.loglength = templength;
+
+    /*
     *   将临时字符串输入到本tstring对象 
     *   Enter a temporary string into this TString object
     */
     *this << temptstr;
 
     return *this;
+}
+
+/****************************************************************************
+* Name     : erase
+* Describe : Deletes the character at the specified position
+* 描     述: 删除指定位置的字符 
+* parameter: iterator
+* @return  : iterator
+* date     : 2020-07-02 
+*/
+tstringiterator tstring::erase(iterator iter)
+
+{
+    tstring temptstr;
+    temptstr.checkNextMaxSizeSpace(this->getLength());
+    char *temptstr_j = temptstr.tchar;
+    size_t del_index = 0, record_index = 0;
+    for (tstring::iterator i = this->begin(); i < this->end(); i++, temptstr_j++, record_index++)
+    {
+        if (i == iter)
+        {
+            temptstr_j--;
+            del_index = record_index;
+            continue;
+        }
+        *temptstr_j = *i;
+    }
+    temptstr.loglength = this->getLength() - 1;
+    temptstr >> *this;
+    return iterator(this->tchar + del_index);
 }
 
 /****************************************************************************
@@ -765,7 +816,7 @@ tstringiterator tstring::begin()
 */
 tstringiterator tstring::end()
 {
-    return iterator(this->tchar + this->loglength + 1);
+    return iterator(this->tchar + this->loglength);
 }
 /****************************************************************************
 * Name     : rbegin()
@@ -922,27 +973,10 @@ tstring tstring::operator+(const char &ch)
 //2020/06/16 windsnow 改为返回tstring自身引用
 //v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数
 //v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数，更改空间申请方式
+//v0.1.0.1 2020/07/02 windSnowLi tstring>>tstring与tstring<<tstring本质相同，修改为一致
 tstring &tstring::operator>>(tstring &tstr)
 {
-
-    //识别是否需要清空
-    if (tstr.loglength != 0)
-    {
-        delete tstr.tchar;
-        tstr.max_length = 128;
-        tstr.loglength = 0;
-        tstr.tchar = new char[tstr.max_length];
-    }
-
-    //判断>>后的字符串空间是否足够
-    tstr.checkNextMaxSizeSpace(this->getLength());
-
-    //将长度信息赋值给>>后的字符串
-    tstr.loglength = this->getLength();
-
-    //将>>左边的字符串拷贝给右边的字符串
-    Strcpy(tstr.tchar, this->tchar);
-
+    tstr << *this;
     return *this;
 }
 
@@ -956,6 +990,7 @@ tstring &tstring::operator>>(tstring &tstr)
 //2020/06/16 windsnow 改为返回tstring自身引用
 //v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数
 //v0.0.2 2020/06/23 windSnowLi 更改获取长度的函数，更改空间申请方式
+//v0.1.0.1 2020/07/02 windSnowLi 修复<<长度未正确赋值的BUG
 tstring &tstring::operator<<(tstring &tstr)
 {
     //识别是否需要清空
@@ -971,7 +1006,7 @@ tstring &tstring::operator<<(tstring &tstr)
     this->checkNextMaxSizeSpace(this->getLength());
 
     //将<<右边的长度信息给左边
-    this->loglength = this->getLength();
+    this->loglength = tstr.getLength();
 
     //将信息拷贝至<<左边
     Strcpy(this->tchar, tstr.tchar);
