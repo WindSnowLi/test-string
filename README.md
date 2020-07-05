@@ -552,7 +552,6 @@ public:
 ***
 
 ``` 
-
      /*
 
     -  比较两个反向迭代器位置，如果前者小于后者，则前者者地址值更大，此时返回true
@@ -585,3 +584,10 @@ public:
     */
     bool operator>=(const reverse_tstringiterator &iter);
 ```
+
+### repair
+
+***
+修复查找函数find的BUG
+Fix a BUG in find
+***

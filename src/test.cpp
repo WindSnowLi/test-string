@@ -5,33 +5,61 @@
 using namespace std;
 int main(int argc, char const *argv[])
 {
-    tstring test1("我喜欢你");
-    cout << test1.cstr() << endl;
+    /*
+    *  直接初始化测试  
+    *  Directly initialize the test.
+    */
+    tstring ini_test("我喜欢你");
+    cout << ini_test.cstr() << endl;
 
-    tstring test2(test1);
-    cout << test2.cstr() << endl;
+    /*
+    *   拷贝初始化测试 
+    *  Copy the initialization tests.
+    */
+    tstring copy_test(ini_test);
+    cout << copy_test.cstr() << endl;
 
-    tstring test3 = test2;
-    cout << test3.cstr() << endl;
+    /*
+    *   tstring对象直接赋值测试 
+    *  The tstring object is a direct assignment test.
+    */
+    tstring tstring_copy_test = copy_test;
+    cout << tstring_copy_test.cstr() << endl;
 
-    tstring test4 = "我喜欢你";
-    cout << test4.cstr() << endl;
+    /*
+    *   重载运算符测试 
+    *  Overload operator test.
+    */
+    tstring operator_test1 = "我喜欢你";
+    cout << operator_test1.cstr() << endl;
+    tstring operator_test2 = tstring_copy_test + "我爱你";
+    cout << operator_test2.cstr() << endl;
 
-    tstring test5 = test3 + "我爱你";
-    cout << test5.cstr() << endl;
+    tstring operator_test3 = operator_test2 + "我爱你啊" + operator_test1;
+    cout << operator_test3.cstr() << endl;
 
-    tstring test6 = test5 + "我爱你啊" + test4;
-    cout << test6.cstr() << endl;
-
-    if (test1 == test4)
+    /*
+    *   tstring对象对比测试 
+    *  tstring object contrast test
+    */
+    if (ini_test == operator_test1)
     {
         cout << "I Love You!!!!!" << endl;
     }
-    tstring test7 = "I Love You";
-    cout << test7.charAt(2) << endl;
 
-    tstring test8;
-    if (test8.isEmpty())
+    /*
+    *   指定取值测试 
+    *  Specified value test
+    */
+    tstring chaAt_test = "I Love You";
+    cout << chaAt_test.charAt(2) << endl;
+
+    /*
+    *   判断是否非空测试 
+    *  Determine if the test is not null.
+    */
+    tstring isEmpty_test;
+    if (isEmpty_test.isEmpty())
     {
         cout << "我想看到你!" << endl;
     }
@@ -40,122 +68,183 @@ int main(int argc, char const *argv[])
         cout << "I want look you!" << endl;
     }
 
-    tstring test9 = "I love you!";
-    tstring test10 = "I Love You!";
-    tstring test11 = "I Love You!!";
-    if (test9.compareIgnoreCase(test10))
+    /*
+    *   忽略大小写对比测试 
+    *  Ignore case-comparison tests.
+    */
+    tstring compareIgnore_test1 = "I love you!";
+    tstring compareIgnore_test2 = "I Love You!";
+    tstring compareIgnore_test3 = "I Love You!!";
+    if (compareIgnore_test1.compareIgnoreCase(compareIgnore_test2))
     {
         cout << "me too" << endl;
     }
-    if (test10.compareIgnoreCase(test11))
+    if (compareIgnore_test2.compareIgnoreCase(compareIgnore_test3))
     {
         cout << "me too too " << endl;
     }
-    if (test9.compareIgnoreCase(test11))
+    if (compareIgnore_test1.compareIgnoreCase(compareIgnore_test3))
     {
         cout << "me too too!! " << endl;
     }
 
-    cout << test11.find("Love") << endl;
+    /*
+    *   查找字符串测试 
+    *  Find string test.
+    */
+    tstring find_test = "bbc abcdab abcdabcdabde";
+    cout << find_test.find("abcdabd") << endl;
 
-    tstring test15 = "windSnowLi", test16;
-    test15 >> test16;
-    cout << test16 << endl;
+    /*
+    *   流输入测试
+    *  Stream input test.
+    */
+    tstring stream_test1 = "windSnowLi", stream_test2;
+    stream_test1 >> stream_test2;
+    cout << stream_test2 << endl;
 
-    tstring test17;
-    test17 += test16;
-    cout << "LOVE\t" << test17 << endl;
+    /*
+    *   自叠加测试 
+    *  Self stacking test.
+    */
+    tstring stack_test1;
+    stack_test1 += stream_test2;
+    cout << "LOVE\t" << stack_test1 << endl;
 
-    tstring test18 = "I ";
-    test18 += "LOVE ";
-    cout << test18 << endl;
-
-    tstring test12;
-    test12 << "我爱你";
-    tstring test13 = "我喜欢你";
-    tstring test14 = test12 + test13;
-    cout << test14 << endl;
-
-    cout << "*********************" << endl;
-    tstring test19 = "ILoveYouILoveYouILoveYouILoveYouILoveYouILoveYouILoveYouILoveYou";
-
-    istringstream is(test19.cstr());
-
-    tstring test20;
-    is >> test20;
-    cout << test20 << endl;
-
-    cout << test11.getLength() << "\t" << strlen(test11.cstr()) << endl;
-    char a = '5';
-    char tt[2];
-    tstring temp22 = "I Love Yo";
-    temp22 = temp22 + 'u';
-    cout << temp22 << endl;
-    tstring aaa;
-    cout << aaa;
-    cout << test19.getMaxSize() << "\t" << test19.getLength() << endl;
-    cout << test11.getMaxSize() << "\t" << test11.getLength() << endl;
-    cout << test19.getMD5() << endl;
-
-    tstring test23;
-    test23 += "I Love You。";
-    cout << test23 << endl;
-    test23[10] = '.';
-    cout << test23 << endl;
-
-    std::string test24 = "windSnowLi";
-    cout << test24 << endl;
-
-    tstring test25 = test24;
-    tstring test26(test24);
-    test26 += test24;
-    cout << test25 << "\t||\t" << test26 << endl;
-
-    tstring test27 = "aab";
-    char *test28 = (char *)test27.cstr();
-    test28[2] = 'a';
-    cout << test28 << endl;
-
-    test19.replace("ILoveYou", " I LOVE YOU");
-    cout << test19 << endl;
-    test19.replace("LOVE", "");
-    cout << test19 << endl;
+    tstring stack_test2 = "I ";
+    stack_test2 += "LOVE ";
+    cout << stack_test2 << endl;
 
     tstring test29;
     test29 += 'a';
     cout << test29 << endl;
-    tstring test30;
-    test30 = toTstring(125.5);
-    cout << test30 << endl;
 
-    cout << test30.back() << endl;
-    for (auto iter = test19.begin(); iter != test19.end(); iter++)
+    /*
+    *   流输入测试
+    *  Stream input test.
+    */
+    tstring stream_input_test1;
+    stream_input_test1 << "我爱你";
+    tstring stream_input_test2 = "我喜欢你";
+    tstring stream_input_test3 = stream_input_test1 + stream_input_test2;
+    cout << stream_input_test3 << endl;
+
+    cout << "*********************" << endl;
+    tstring stream_input_test4 = "ILoveYouILoveYouILoveYouILoveYouILoveYouILoveYouILoveYouILoveYou";
+
+    istringstream is(stream_input_test4.cstr());
+
+    tstring stream_input_test5;
+    is >> stream_input_test5;
+    cout << stream_input_test5 << endl;
+
+    /*
+    *   获取长度测试 
+    *  Get length test.
+    */
+    cout << compareIgnore_test3.getLength() << "\t" << strlen(compareIgnore_test3.cstr()) << endl;
+    tstring get_length_test = "I Love Yo";
+    get_length_test = get_length_test + 'u';
+    cout << get_length_test << endl;
+    cout << stream_input_test4.getMaxSize() << "\t" << stream_input_test4.getLength() << endl;
+    cout << compareIgnore_test3.getMaxSize() << "\t" << compareIgnore_test3.getLength() << endl;
+    cout << stream_input_test4.getMD5() << endl;
+
+    /*
+    *   字符重赋值测试 
+    *  Character reassignment test.
+    */
+    tstring operator_test;
+    operator_test += "I Love You。";
+    cout << operator_test << endl;
+    operator_test[10] = '.';
+    cout << operator_test << endl;
+
+    /*
+    *   std::string向tstring赋值测试 
+    *  std::string to tstring assignment test
+    */
+    std::string string_to_tstring_test = "windSnowLi";
+    cout << string_to_tstring_test << endl;
+
+    tstring test25 = string_to_tstring_test;
+    tstring test26(string_to_tstring_test);
+    test26 += string_to_tstring_test;
+    cout << test25 << "\t||\t" << test26 << endl;
+
+    /*
+    *   字符串替换测试 
+    *  String replacement test
+    */
+    tstring string_replace_test1 = "aab";
+    char *string_replace_test2 = (char *)string_replace_test1.cstr();
+    string_replace_test2[2] = 'a';
+    cout << string_replace_test2 << endl;
+
+    stream_input_test4.replace("ILoveYou", " I LOVE YOU");
+    cout << stream_input_test4 << endl;
+    stream_input_test4.replace("LOVE", "");
+    cout << stream_input_test4 << endl;
+
+    /*
+    *   数值类型转化为tstring 
+    *  The numeric type is converted to tstring.
+    */
+    tstring numeric_to_tstring_test;
+    numeric_to_tstring_test = toTstring(125.5);
+    cout << numeric_to_tstring_test << endl;
+
+    /*
+    *   返回末尾测试 
+    *  Back to the end test.
+    */
+    cout << numeric_to_tstring_test.back() << endl;
+
+    /*
+    *   迭代器初步测试 
+    *  Initial testing of the iterator.
+    */
+    for (auto iter = stream_input_test4.begin(); iter != stream_input_test4.end(); iter++)
     {
         cout << *iter << " ";
     }
     cout << endl;
-    for (auto iter = test19.rbegin(); iter != test19.rend(); iter++)
+    for (auto iter = stream_input_test4.rbegin(); iter != stream_input_test4.rend(); iter++)
     {
         cout << *iter << " ";
     }
 
-    tstring test31 = "0000ILoveYouILoveYouILoveYouILoveYouILoveYouILoveYouILoveYouILoveYou0000";
-    tstring test32 = test31.getEncodeBase64();
-    cout << test32 << endl;
-    cout << test32.getDecodeBase64() << endl;
-    tstring test33 = "123456789";
-    test33.insert("abc", 5);
-    test33.insert("abc", 0);
-    cout << test33 << "\t" << test33.getLength() << endl;
-    tstring::iterator test33iter = test33.begin() + 5;
-    cout << *test33iter << "\t" << endl;
-    cout << test33 << endl;
-    test33.erase(test33iter);
-    cout << test33 << endl;
-    test33.erase(test33.begin());
-    cout << test33 << endl;
-    test33.erase(test33.end() - 1);
-    cout << test33 << endl;
+    /*
+    *   Base64编码、解码测试
+    *  Base64 encoding, decoding test.
+    */
+    tstring tstring_base64_test = "0000ILoveYouILoveYouILoveYouILoveYouILoveYouILoveYouILoveYouILoveYou0000";
+    tstring tstring_base64 = tstring_base64_test.getEncodeBase64();
+    cout << tstring_base64 << endl;
+    cout << tstring_base64.getDecodeBase64() << endl;
+
+    /*
+    *   字符串插入测试 
+    *  String insertion test
+    */
+    tstring tstring_insert_test = "123456789";
+    tstring_insert_test.insert("abc", 5);
+    tstring_insert_test.insert("abc", 0);
+    cout << tstring_insert_test << "\t" << tstring_insert_test.getLength() << endl;
+
+    /*
+    *  迭代器删除数据测试
+    *  Iterator removes data tests
+    */
+    tstring::iterator tstring_insert_testiter = tstring_insert_test.begin() + 5;
+    cout << *tstring_insert_testiter << "\t" << endl;
+    cout << tstring_insert_test << endl;
+    tstring_insert_test.erase(tstring_insert_testiter);
+    cout << tstring_insert_test << endl;
+    tstring_insert_test.erase(tstring_insert_test.begin());
+    cout << tstring_insert_test << endl;
+    tstring_insert_test.erase(tstring_insert_test.end() - 1);
+    cout << tstring_insert_test << endl;
     cout << "endl" << endl;
     getchar();
     return 0;

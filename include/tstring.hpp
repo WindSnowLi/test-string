@@ -95,8 +95,8 @@ public:
     char charAt(int index);
     //判断字符串是否为空
     bool isEmpty();
-    //查找字符串，返回首个字符位置,size_t参数为返回后的位置偏移量
-    size_t find(const char *targetstr, size_t move = 0);
+    //查找字符串，返回首个字符位置,long long参数为返回后的位置偏移量
+    long long find(const char *targetstr, long long move = 0);
     //将字符串全部转化为小写
     tstring &toLowerCase();
     //将字符串全部转化为大写
@@ -120,7 +120,7 @@ public:
     void replace(const char *targetstr, const char *newstr);
 
     //返回最后一个字符
-    char back();
+    char &back();
 
     //追加字符串
     tstring &append(const char *str);

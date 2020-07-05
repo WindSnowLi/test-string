@@ -358,10 +358,10 @@ void tstring::checkNextMaxSizeSpace(size_t newstrsize)
 * @return  : char
 * date     : 2020-06-18 
 */
-
+//2020/07/04 windSnowLi 使用重载运算直接返回
 char tstring::charAt(int index)
 {
-    return *(this->tchar + index);
+    return operator[](index);
 }
 
 /****************************************************************************
@@ -380,34 +380,68 @@ bool tstring::isEmpty()
 /****************************************************************************
 * Name     : find
 * Describe :查找字符串，返回首个字符位置,int参数为返回后的位置偏移量
-* parameter: char *newstr, size_t move=0
-* @return  : size_t
+* parameter: char *newstr, long long move=0
+* @return  : long long
 * date     : 2020-06-18 
 */
 //2020/6/19 windSnowLi 加入指针是否为空的判断
-size_t tstring::find(const char *targetstr, size_t move)
+//2020/07/05 windSnowLi 修复查找的BUG,使用KMP算法
+/*
+*    targetstr为需要查找的字符串，tstr为主字符串
+*  "targetstr" is the string to look for, and "tstr" is the primary string
+*/
+long long tstring::find(const char *targetstr, long long move)
 {
     if (targetstr != NULL && this->tchar != NULL)
     {
-        char *ptempstr1 = this->tchar;
-        char *ptempstr2 = (char *)targetstr;
-        size_t index = 0;
-        while (*ptempstr1 != '\0')
+        long long targetstr_len = GetPCharLength(targetstr);
+        long long targetstr_i = 0;
+        long long targetstr_j = -1;
+        long long *next = new long long[targetstr_len];
+        next[0] = -1;
+
+        while (targetstr_i < targetstr_len)
         {
-            if (*ptempstr1 == *ptempstr2)
+            if (targetstr_j == -1 || targetstr[targetstr_i] == targetstr[targetstr_j])
             {
-                ptempstr2++;
+                targetstr_i++;
+                targetstr_j++;
+                next[targetstr_i] = targetstr_j;
             }
             else
             {
-                ptempstr2 = (char *)targetstr;
+                targetstr_j = next[targetstr_j];
             }
-            ptempstr1++;
-            index++;
-            if (*ptempstr2 == '\0')
+        }
+
+        long long tstr_i = 0;
+        targetstr_j = 0;
+        long long tstr_len = this->getLength();
+
+        while (tstr_i < tstr_len && targetstr_j < targetstr_len)
+        {
+            if (targetstr_j == -1 || this->tchar[tstr_i] == targetstr[targetstr_j])
             {
-                return index + move - GetPCharLength(targetstr);
+                tstr_i++;
+                targetstr_j++;
             }
+            else
+            {
+                /*
+                *   当前字符匹配失败，进行跳转 
+                *   The current character match fails, jump
+                */
+                targetstr_j = next[targetstr_j];
+            }
+        }
+        delete[] next;
+        /*
+        *   匹配成功 
+        *  The match is successful
+        */
+        if (targetstr_j == targetstr_len)
+        {
+            return tstr_i - targetstr_j + move;
         }
     }
     return -1;
@@ -579,16 +613,13 @@ void tstring::replace(const char *targetstr, const char *newstr)
 * Name     : back
 * Describe :返回最后一个字符
 * parameter: 无
-* @return  : char
+* @return  : char&
 * date     : 2020-06-27 
 */
-char tstring::back()
+//2020/07/04 windSnowLi 改为返回引用
+char &tstring::back()
 {
-    if (this->loglength != 0)
-    {
-        return *(this->tchar + this->loglength - 1);
-    }
-    return '\0';
+    return operator[](this->loglength - 1);
 }
 
 /****************************************************************************
