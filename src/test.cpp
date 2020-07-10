@@ -2,6 +2,7 @@
 #include "tstring.hpp"
 #include <sstream>
 #include <cstring>
+#include <fstream>
 using namespace std;
 int main(int argc, char const *argv[])
 {
@@ -148,7 +149,8 @@ int main(int argc, char const *argv[])
     cout << get_length_test << endl;
     cout << stream_input_test4.getMaxSize() << "\t" << stream_input_test4.getLength() << endl;
     cout << compareIgnore_test3.getMaxSize() << "\t" << compareIgnore_test3.getLength() << endl;
-    cout << stream_input_test4.getMD5() << endl;
+    tstring temp_MD5 = stream_input_test4.getMD5();
+    cout << temp_MD5 << endl;
 
     /*
     *   字符重赋值测试 
@@ -181,10 +183,11 @@ int main(int argc, char const *argv[])
     string_replace_test2[2] = 'a';
     cout << string_replace_test2 << endl;
 
+    cout << stream_input_test4.getLength() << endl;
     stream_input_test4.replace("ILoveYou", " I LOVE YOU");
-    cout << stream_input_test4 << endl;
+    cout << stream_input_test4.getLength() << "\t" << stream_input_test4 << endl;
     stream_input_test4.replace("LOVE", "");
-    cout << stream_input_test4 << endl;
+    cout << stream_input_test4.getLength() << "\t" << stream_input_test4 << endl;
 
     /*
     *   数值类型转化为tstring 
@@ -208,11 +211,12 @@ int main(int argc, char const *argv[])
     {
         cout << *iter << " ";
     }
-    cout << endl;
+    cout << "\n正向迭代器访问结束" << endl;
     for (auto iter = stream_input_test4.rbegin(); iter != stream_input_test4.rend(); iter++)
     {
         cout << *iter << " ";
     }
+    cout << "\n反向迭代器访问结束" << endl;
 
     /*
     *   Base64编码、解码测试
@@ -245,6 +249,30 @@ int main(int argc, char const *argv[])
     cout << tstring_insert_test << endl;
     tstring_insert_test.erase(tstring_insert_test.end() - 1);
     cout << tstring_insert_test << endl;
+
+    /*
+    *   文件Base64编码测试 
+    *   File Base64 encoding test.
+    */
+    ifstream Base64_File_test1;
+    Base64_File_test1.open("E:\\Desktop\\test.txt", std::ios::in);
+    if (Base64_File_test1)
+    {
+        string Base64_File_test2;
+        Base64_File_test1 >> Base64_File_test2;
+        ofstream Base64_File_test4("E:\\Desktop\\test1.txt", std::ios::out | std::ios::trunc);
+        tstring Base64_File_test3 = Base64_File_test2;
+        Base64_File_test4 << Base64_File_test3.getEncodeBase64();
+        cout << "Base64 size:" << Base64_File_test3.getLength() << endl
+             << "Base64_tstring MAX size:" << Base64_File_test3.getMaxSize() << endl;
+        Base64_File_test4.close();
+    }
+    else
+    {
+        cout << "file don't found!" << endl;
+    }
+    Base64_File_test1.close();
+
     cout << "endl" << endl;
     getchar();
     return 0;

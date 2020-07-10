@@ -82,7 +82,7 @@ tstring::~tstring()
 {
     if (this->tchar != NULL)
     {
-        delete this->tchar;
+        delete[] this->tchar;
         this->tchar = NULL;
     }
 }
@@ -344,9 +344,9 @@ void tstring::checkNextMaxSizeSpace(size_t newstrsize)
     if (temp_max_length != max_length)
     {
         //新申请的空间
-        char *tempstrspace = new char[max_length];
+        char *tempstrspace = new char[max_length + 10];
         Strcpy(tempstrspace, this->tchar);
-        delete this->tchar;
+        delete[] this->tchar;
         this->tchar = tempstrspace;
     }
 }
@@ -397,7 +397,7 @@ long long tstring::find(const char *targetstr, long long move)
         long long targetstr_len = GetPCharLength(targetstr);
         long long targetstr_i = 0;
         long long targetstr_j = -1;
-        long long *next = new long long[targetstr_len];
+        long long *next = new long long[targetstr_len + 10];
         next[0] = -1;
 
         while (targetstr_i < targetstr_len)
@@ -406,7 +406,14 @@ long long tstring::find(const char *targetstr, long long move)
             {
                 targetstr_i++;
                 targetstr_j++;
-                next[targetstr_i] = targetstr_j;
+                if (targetstr[targetstr_i] != targetstr[targetstr_j])
+                {
+                    next[targetstr_i] = targetstr_j;
+                }
+                else
+                {
+                    next[targetstr_i] = next[targetstr_j];
+                }
             }
             else
             {
@@ -497,7 +504,7 @@ tstring &tstring::clear()
 {
     if (this->loglength != 0)
     {
-        delete this->tchar;
+        delete[] this->tchar;
         this->tchar = new char[128];
         this->loglength = 0;
         this->max_length = 128;
@@ -559,54 +566,46 @@ tstring tstring::getMD5()
 * @return  : 无
 * date     : 2020-06-26 
 */
-
+//2020/07/10 windSnowLi 修复查找的隐藏BUG
 void tstring::replace(const char *targetstr, const char *newstr)
 {
+    //需要替换的字符串长度
+    size_t targetlength = GetPCharLength(targetstr);
+    if (targetlength == 0)
+    {
+        return;
+    }
     tstring temptstr;
 
-    //需要替换成的字符串长度
-    size_t targetlength = GetPCharLength(targetstr);
-
-    char *ptempstr1 = this->tchar;
-    char *ptempstr2 = (char *)targetstr;
-
-    while (*ptempstr1 != '\0')
+    char *pMainStr = this->tchar;
+    char *pTargetstr = (char *)targetstr;
+    char *pprogram = this->tchar;
+    while (*pMainStr != '\0')
     {
-        if (*ptempstr1 == *ptempstr2)
+        if (*pMainStr == *pTargetstr)
         {
-            ptempstr2++;
+            pTargetstr++;
+            pMainStr++;
         }
         else
         {
-            ptempstr2 = (char *)targetstr;
-            temptstr += *ptempstr1;
+            pTargetstr = (char *)targetstr;
+            pMainStr = pprogram + 1;
+            while (pprogram < pMainStr)
+            {
+                temptstr += *pprogram;
+                pprogram++;
+            }
         }
-        ptempstr1++;
-        if (targetlength == 0)
+
+        if (*pTargetstr == '\0')
         {
-            //需要替换成的字符串长度为0，所以不管上述匹配过程需要替换成的字符串指针是否改变，都重新指向目标字符串
-            ptempstr2 = (char *)targetstr;
-        }
-        else if (*ptempstr2 == '\0')
-        {
-            ptempstr2 = (char *)targetstr;
+            pTargetstr = (char *)targetstr;
+            pprogram = pprogram + targetlength;
             temptstr += newstr;
         }
     }
-
-    //释放已有内存，长度置为零,已有空间置为0，用于直接接收临时对象内容，减少浪费
-    if (this->tchar != NULL)
-    {
-        delete this->tchar;
-    }
-    this->tchar = NULL;
-    this->loglength = 0;
-    this->max_length = 0;
-
-    //将临时对象内容赋值给原有对象
-    this->tchar = temptstr.tchar;
-    this->loglength = temptstr.loglength;
-    this->max_length = temptstr.max_length;
+    this->swap(temptstr);
 }
 
 /****************************************************************************
@@ -894,7 +893,7 @@ tstring &tstring::operator=(const char *str)
     //如果字符串本身不为零，释放已有内存，长度置为零
     if (this->loglength != 0)
     {
-        delete this->tchar;
+        delete[] this->tchar;
         this->tchar = new char[128];
         this->loglength = 0;
         this->max_length = 128;
@@ -1027,7 +1026,7 @@ tstring &tstring::operator<<(tstring &tstr)
     //识别是否需要清空
     if (this->loglength != 0)
     {
-        delete this->tchar;
+        delete[] this->tchar;
         this->max_length = 128;
         this->loglength = 0;
         this->tchar = new char[this->max_length];
@@ -1061,7 +1060,7 @@ tstring &tstring::operator<<(const char *str)
     //识别是否需要清空
     if (this->loglength != 0)
     {
-        delete this->tchar;
+        delete[] this->tchar;
         this->max_length = 128;
         this->loglength = 0;
         this->tchar = new char[this->max_length];
@@ -1214,7 +1213,7 @@ tstring &tstring::operator=(const std::string &stdstr)
     //如果字符串本身不为零，释放已有内存，长度置为零
     if (this->loglength != 0)
     {
-        delete this->tchar;
+        delete[] this->tchar;
         this->tchar = new char[128];
         this->loglength = 0;
         this->max_length = 128;

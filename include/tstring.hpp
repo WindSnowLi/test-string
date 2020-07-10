@@ -39,15 +39,16 @@ public:
     reverse_iterator rend();
 
 private:
-    //信息存储指针
-    //char *tchar = NULL;
-    //2020/06/23 windSnowLi 修改为默认值128
-    char *tchar = new char[128]{'\0'};
-
     //字符串的长度记录
     size_t loglength = 0;
     //当前最大空间长度,默认128
     size_t max_length = 128;
+
+    //信息存储指针
+    //char *tchar = NULL;
+    //2020/06/23 windSnowLi 修改为默认值128
+    char *tchar = new char[max_length + 10]{'\0'};
+
     //获取字符串长度
     static size_t GetPCharLength(const char *str);
     //复制字符串

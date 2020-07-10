@@ -591,3 +591,17 @@ public:
 修复查找函数find的BUG
 Fix a BUG in find
 ***
+
+## v0.1.0.2 FIX BUG AND MODIFY
+
+***
+
+1. replace()含有隐藏BUG，已初步修复
+2. 修复部分内存释放时的BUG
+3. 优化查找字符串算法
+
+1. replace() contains hidden bugs, which have been preliminarily fixed
+2. Fixed some memory release bugs
+3. Optimize the search string algorithm
+
+***
