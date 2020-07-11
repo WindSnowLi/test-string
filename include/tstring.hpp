@@ -18,6 +18,10 @@
 #include <iterator>
 #include "tstringiterator.hpp"
 #include "Base64.hpp"
+#ifndef BASICS_MAX_LENGTH_
+#define BASICS_MAX_LENGTH_ 128
+#endif // !BASICS_MAX_LENGTH_
+
 class tstringiterator;
 class reverse_tstringiterator;
 class tstring
@@ -41,13 +45,13 @@ public:
 private:
     //字符串的长度记录
     size_t loglength = 0;
-    //当前最大空间长度,默认128
-    size_t max_length = 128;
+    //当前最大空间长度,默认BASICS_MAX_LENGTH_  128
+    size_t max_length = BASICS_MAX_LENGTH_;
 
     //信息存储指针
     //char *tchar = NULL;
     //2020/06/23 windSnowLi 修改为默认值128
-    char *tchar = new char[max_length + 10]{'\0'};
+    char *tchar = new char[BASICS_MAX_LENGTH_ + 10]{'\0'};
 
     //获取字符串长度
     static size_t GetPCharLength(const char *str);
@@ -93,7 +97,7 @@ public:
     //比较内容是否相等，忽略大小写
     bool compareIgnoreCase(const tstring &tstr);
     //获取字符串上某个字符
-    char charAt(int index);
+    char charAt(size_t index);
     //判断字符串是否为空
     bool isEmpty();
     //查找字符串，返回首个字符位置,long long参数为返回后的位置偏移量
@@ -185,7 +189,7 @@ public:
     tstring &operator+=(const std::string &stdstr);
 
     //重载[]运算符，用于下标取值
-    char &operator[](int move);
+    char &operator[](size_t index);
 
     //重载+=运算符，trstring加char
     tstring &operator+=(const char &ch);

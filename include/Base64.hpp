@@ -6,13 +6,13 @@ class tstring;
    DataByte
     [in]输入的数据长度,以字节为单位
     */
-tstring Encode(const char *Data, int DataByte);
+char *Encode(const char *Data, size_t DataByte, size_t &OutByte, size_t &max_length);
 
 /*解码
     DataByte
     [in]输入的数据长度,以字节为单位
     OutByte
     */
-tstring Decode(const char *Data, int DataByte);
+char *Decode(const char *Data, size_t DataByte, size_t &OutByte, size_t &max_length);
 
 #endif

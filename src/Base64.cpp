@@ -1,12 +1,27 @@
 #include "base64.hpp"
 
-tstring Encode(const char *Data, int DataByte)
+char *Encode(const char *Data, size_t DataByte, size_t &OutByte, size_t &max_length)
 {
     //编码表
     const char EncodeTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+    size_t current = BASICS_MAX_LENGTH_, needSize = DataByte * 1.4;
+    while (true)
+    {
+        if (needSize >= current)
+        {
+            //默认两倍倍率扩大
+            current *= 2;
+        }
+        else
+        {
+            max_length = current;
+            break;
+        }
+    }
     //返回值
-    tstring strEncode;
-    strEncode.reSize(DataByte * 1.34 + 1);
+    char *encodeStr = new char[current + 10];
+    char *tempStrEncodeTchar = encodeStr;
     unsigned char Tmp[4] = {0};
     int LineLength = 0;
     for (long long i = 0; i < (long long)(DataByte / 3); i++)
@@ -14,13 +29,14 @@ tstring Encode(const char *Data, int DataByte)
         Tmp[1] = *Data++;
         Tmp[2] = *Data++;
         Tmp[3] = *Data++;
-        strEncode += EncodeTable[Tmp[1] >> 2];
-        strEncode += EncodeTable[((Tmp[1] << 4) | (Tmp[2] >> 4)) & 0x3F];
-        strEncode += EncodeTable[((Tmp[2] << 2) | (Tmp[3] >> 6)) & 0x3F];
-        strEncode += EncodeTable[Tmp[3] & 0x3F];
+        *tempStrEncodeTchar++ = EncodeTable[Tmp[1] >> 2];
+        *tempStrEncodeTchar++ = EncodeTable[((Tmp[1] << 4) | (Tmp[2] >> 4)) & 0x3F];
+        *tempStrEncodeTchar++ = EncodeTable[((Tmp[2] << 2) | (Tmp[3] >> 6)) & 0x3F];
+        *tempStrEncodeTchar++ = EncodeTable[Tmp[3] & 0x3F];
         if (LineLength += 4, LineLength == 76)
         {
-            strEncode += "\r\n";
+            *tempStrEncodeTchar++ = '\r';
+            *tempStrEncodeTchar++ = '\n';
             LineLength = 0;
         }
     }
@@ -29,24 +45,25 @@ tstring Encode(const char *Data, int DataByte)
     if (Mod == 1)
     {
         Tmp[1] = *Data++;
-        strEncode += EncodeTable[(Tmp[1] & 0xFC) >> 2];
-        strEncode += EncodeTable[((Tmp[1] & 0x03) << 4)];
-        strEncode += "==";
+        *tempStrEncodeTchar++ = EncodeTable[(Tmp[1] & 0xFC) >> 2];
+        *tempStrEncodeTchar++ = EncodeTable[((Tmp[1] & 0x03) << 4)];
+        *tempStrEncodeTchar++ = '=';
+        *tempStrEncodeTchar++ = '=';
     }
     else if (Mod == 2)
     {
         Tmp[1] = *Data++;
         Tmp[2] = *Data++;
-        strEncode += EncodeTable[(Tmp[1] & 0xFC) >> 2];
-        strEncode += EncodeTable[((Tmp[1] & 0x03) << 4) | ((Tmp[2] & 0xF0) >> 4)];
-        strEncode += EncodeTable[((Tmp[2] & 0x0F) << 2)];
-        strEncode += "=";
+        *tempStrEncodeTchar++ = EncodeTable[(Tmp[1] & 0xFC) >> 2];
+        *tempStrEncodeTchar++ = EncodeTable[((Tmp[1] & 0x03) << 4) | ((Tmp[2] & 0xF0) >> 4)];
+        *tempStrEncodeTchar++ = EncodeTable[((Tmp[2] & 0x0F) << 2)];
+        *tempStrEncodeTchar++ = '=';
     }
-
-    return strEncode;
+    OutByte = tempStrEncodeTchar - encodeStr;
+    return encodeStr;
 }
 
-tstring Decode(const char *Data, int DataByte)
+char *Decode(const char *Data, size_t DataByte, size_t &OutByte, size_t &max_length)
 {
     //解码表
     const char DecodeTable[] =
@@ -65,7 +82,23 @@ tstring Decode(const char *Data, int DataByte)
             39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, // 'a'-'z'
         };
     //返回值
-    tstring strDecode;
+    size_t current = BASICS_MAX_LENGTH_, needSize = DataByte / 1.2;
+    while (true)
+    {
+        if (needSize >= current)
+        {
+            //默认两倍倍率扩大
+            current *= 2;
+        }
+        else
+        {
+            max_length = current;
+            break;
+        }
+    }
+
+    char *strDecode = new char[current + 10];
+    char *tempstrDecode = strDecode;
     long long nValue;
     long long i = 0;
     while (i < DataByte)
@@ -74,15 +107,15 @@ tstring Decode(const char *Data, int DataByte)
         {
             nValue = DecodeTable[*Data++] << 18;
             nValue += DecodeTable[*Data++] << 12;
-            strDecode += (nValue & 0x00FF0000) >> 16;
+            *tempstrDecode++ = (nValue & 0x00FF0000) >> 16;
             if (*Data != '=')
             {
                 nValue += DecodeTable[*Data++] << 6;
-                strDecode += (nValue & 0x0000FF00) >> 8;
+                *tempstrDecode++ = (nValue & 0x0000FF00) >> 8;
                 if (*Data != '=')
                 {
                     nValue += DecodeTable[*Data++];
-                    strDecode += nValue & 0x000000FF;
+                    *tempstrDecode++ = nValue & 0x000000FF;
                 }
             }
             i += 4;
@@ -93,5 +126,6 @@ tstring Decode(const char *Data, int DataByte)
             i++;
         }
     }
+    OutByte = tempstrDecode - strDecode;
     return strDecode;
 }

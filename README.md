@@ -607,3 +607,27 @@ Fix a BUG in find
 4. Optimized flow input speed, optimized speed of char
 
 ***
+
+## v0.1.1 FIX BUG AND MODIFY AND OPTIMIZE
+
+### add
+
+``` 
+    /*
+
+    -   指定字符串长度
+    -  Specify the length of the string
+
+    */
+    void reSize(size_t size);
+```
+
+### optimize
+
+***
+
+1. 优化BASE64编码和解码的速度
+
+1. Optimize the speed of BASE64 encoding and decoding
+
+***

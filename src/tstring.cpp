@@ -26,6 +26,10 @@ tstring::tstring()
 
 tstring::tstring(const char *str)
 {
+    /*
+    *   需要存储的字符串长度 
+    *  The length of the string to store.
+    */
     size_t templength = GetPCharLength(str);
     //检查空间是否需要变动
     this->checkNextMaxSizeSpace(templength);
@@ -47,6 +51,10 @@ tstring::tstring(const char *str)
 //v0.0.2 2020/06/25 windSnowLi 修复使用tstring为新字符串赋值长度未初始化的BUG
 tstring::tstring(const tstring &tstr)
 {
+    /*
+    *   检查是否需要扩容 
+    *   Check to see if expansion is needed.
+    */
     this->checkNextMaxSizeSpace(tstr.loglength);
     std::cout << this->loglength << "\t" << tstr.loglength << std::endl;
     this->loglength = tstr.loglength;
@@ -64,6 +72,10 @@ tstring::tstring(const tstring &tstr)
 
 tstring::tstring(const std::string &stdstr)
 {
+    /*
+    *   检查是否需要扩容 
+    *   Check to see if expansion is needed.
+    */
     this->checkNextMaxSizeSpace(stdstr.length());
 
     this->loglength = stdstr.length();
@@ -345,8 +357,11 @@ void tstring::checkNextMaxSizeSpace(size_t newstrsize)
     {
         //新申请的空间
         char *tempstrspace = new char[this->getMaxSize() + 10]{'\0'};
-        Strcpy(tempstrspace, this->tchar);
-        delete[] this->tchar;
+        if (this->tchar != NULL)
+        {
+            Strcpy(tempstrspace, this->tchar);
+            delete[] this->tchar;
+        }
         this->tchar = tempstrspace;
     }
 }
@@ -359,7 +374,7 @@ void tstring::checkNextMaxSizeSpace(size_t newstrsize)
 * date     : 2020-06-18 
 */
 //2020/07/04 windSnowLi 使用重载运算直接返回
-char tstring::charAt(int index)
+char tstring::charAt(size_t index)
 {
     return operator[](index);
 }
@@ -502,13 +517,11 @@ size_t tstring::getLength()
 */
 tstring &tstring::clear()
 {
-    if (this->loglength != 0)
+    for (size_t i = 0; i < this->getLength(); i++)
     {
-        delete[] this->tchar;
-        this->tchar = new char[128]{'\0'};
-        this->loglength = 0;
-        this->max_length = 128;
+        this->tchar[i] = '\0';
     }
+    this->loglength = 0;
     return *this;
 }
 
@@ -635,7 +648,7 @@ tstring &tstring::append(const char *str)
 }
 
 /****************************************************************************
-* Name     : 
+* Name     : getEncodeBase64
 * Describe :获得BASE64编码
 * parameter: 无
 * @return  : tstring
@@ -644,7 +657,13 @@ tstring &tstring::append(const char *str)
 
 tstring tstring::getEncodeBase64()
 {
-    return Encode(this->cstr(), this->getLength());
+    tstring tempTstr;
+      if (tempTstr.tchar != NULL)
+      {
+          delete[] tempTstr.tchar;
+          tempTstr.tchar = Encode(this->cstr(), this->getLength(), tempTstr.loglength, tempTstr.max_length);
+      }
+    return tempTstr;
 }
 
 /****************************************************************************
@@ -657,7 +676,13 @@ tstring tstring::getEncodeBase64()
 
 tstring tstring::getDecodeBase64()
 {
-    return Decode(this->cstr(), this->getLength());
+    tstring tempTstr;
+    if (tempTstr.tchar != NULL)
+    {
+        delete[] tempTstr.tchar;
+        tempTstr.tchar = Decode(this->cstr(), this->getLength(), tempTstr.loglength, tempTstr.max_length);
+    }
+    return tempTstr;
 }
 
 /****************************************************************************
@@ -904,25 +929,29 @@ reverse_tstringiterator tstring::rend()
 
 tstring &tstring::operator=(const char *str)
 {
-    //如果字符串本身不为零，释放已有内存，长度置为零
-    if (this->loglength != 0)
-    {
-        delete[] this->tchar;
-        this->tchar = new char[128]{'\0'};
-        this->loglength = 0;
-        this->max_length = 128;
-    }
+    /*
+    *   获得将要赋值的字符串长度 
+    *  Gets the length of the string to be assigned.
+    */
     size_t templength = GetPCharLength(str);
+
+    /*
+    *   清空自身字符串 
+    *  Empty the string itself.
+    */
+    this->clear();
 
     //检查当前最大空间是否够用
     this->checkNextMaxSizeSpace(templength);
 
-    //将即将接收的字符串长度设为新字符串的长度
-    this->loglength = templength;
+    if (templength != 0)
+    {
+        //将即将接收的字符串长度设为新字符串的长度
+        this->loglength = templength;
 
-    //将接收到的char*复制到新字符串
-    Strcpy(this->tchar, str);
-
+        //将接收到的char*复制到新字符串
+        Strcpy(this->tchar, str);
+    }
     return *this;
 }
 
@@ -1321,9 +1350,9 @@ tstring &tstring::operator+=(const std::string &stdstr)
 * date     : 2020-06-24 
 */
 
-char &tstring::operator[](int move)
+char &tstring::operator[](size_t index)
 {
-    return *(this->tchar + move);
+    return *(this->tchar + index);
 }
 
 /****************************************************************************

@@ -224,6 +224,7 @@ int main(int argc, char const *argv[])
     *  Base64 encoding, decoding test.
     */
     tstring tstring_base64_test = "0000ILoveYouILoveYouILoveYouILoveYouILoveYouILoveYouILoveYouILoveYou0000";
+    cout << tstring_base64_test << endl;
     tstring tstring_base64 = tstring_base64_test.getEncodeBase64();
     cout << tstring_base64 << endl;
     cout << tstring_base64.getDecodeBase64() << endl;
@@ -255,6 +256,7 @@ int main(int argc, char const *argv[])
     *   文件Base64编码测试 
     *   File Base64 encoding test.
     */
+    cout << "************file test**********" << endl;
     ifstream Base64_File_test1;
     Base64_File_test1.open("E:\\Desktop\\test.txt", std::ios::in);
     if (Base64_File_test1)
@@ -265,11 +267,11 @@ int main(int argc, char const *argv[])
         long end = clock();
         cout << "tstring:" << end - start << endl;
         ofstream Base64_File_test4("E:\\Desktop\\test1.txt", std::ios::out | std::ios::trunc);
-        tstring Base64_File_test3 = Base64_File_test2;
-         long EncodeStart = clock();
-        Base64_File_test4 << Base64_File_test3.getEncodeBase64();
+        long EncodeStart = clock();
+        tstring Base64_File_test3 = Base64_File_test2.getEncodeBase64();
+        Base64_File_test4 << Base64_File_test3;
         long EncodeEnd = clock();
-        cout << "结束:" << EncodeEnd - EncodeStart << endl;
+        cout << "编码时间:" << EncodeEnd - EncodeStart << endl;
         cout << "Base64 size:" << Base64_File_test3.getLength() << endl
              << "Base64_tstring MAX size:" << Base64_File_test3.getMaxSize() << endl;
         Base64_File_test4.close();
