@@ -599,9 +599,11 @@ Fix a BUG in find
 1. replace()含有隐藏BUG，已初步修复
 2. 修复部分内存释放时的BUG
 3. 优化查找字符串算法
+4. 优化流输入的速度,优化后接char的速度
 
 1. replace() contains hidden bugs, which have been preliminarily fixed
 2. Fixed some memory release bugs
 3. Optimize the search string algorithm
+4. Optimized flow input speed, optimized speed of char
 
 ***

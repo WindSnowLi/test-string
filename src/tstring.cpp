@@ -48,9 +48,9 @@ tstring::tstring(const char *str)
 tstring::tstring(const tstring &tstr)
 {
     this->checkNextMaxSizeSpace(tstr.loglength);
-
+    std::cout << this->loglength << "\t" << tstr.loglength << std::endl;
     this->loglength = tstr.loglength;
-
+    std::cout << this->getMaxSize() << "\t" << tstr.max_length << std::endl;
     Strcpy(this->tchar, tstr.tchar);
 }
 
@@ -341,10 +341,10 @@ void tstring::checkNextMaxSizeSpace(size_t newstrsize)
             break;
         }
     }
-    if (temp_max_length != max_length)
+    if (temp_max_length != this->getMaxSize())
     {
         //新申请的空间
-        char *tempstrspace = new char[max_length + 10];
+        char *tempstrspace = new char[this->getMaxSize() + 10]{'\0'};
         Strcpy(tempstrspace, this->tchar);
         delete[] this->tchar;
         this->tchar = tempstrspace;
@@ -505,7 +505,7 @@ tstring &tstring::clear()
     if (this->loglength != 0)
     {
         delete[] this->tchar;
-        this->tchar = new char[128];
+        this->tchar = new char[128]{'\0'};
         this->loglength = 0;
         this->max_length = 128;
     }
@@ -826,6 +826,20 @@ tstringiterator tstring::erase(iterator iter)
 }
 
 /****************************************************************************
+* Name     : reSize
+* Describe : Specify the length of the string
+* 描     述:指定字符串长度
+* parameter: size_t size
+* @return  : void
+* date     : 2020-07-11 
+*/
+
+void tstring::reSize(size_t size)
+{
+    this->checkNextMaxSizeSpace(size);
+}
+
+/****************************************************************************
 * Name     : begin
 * Describe :起始迭代器
 * parameter: 无
@@ -894,7 +908,7 @@ tstring &tstring::operator=(const char *str)
     if (this->loglength != 0)
     {
         delete[] this->tchar;
-        this->tchar = new char[128];
+        this->tchar = new char[128]{'\0'};
         this->loglength = 0;
         this->max_length = 128;
     }
@@ -1029,7 +1043,7 @@ tstring &tstring::operator<<(tstring &tstr)
         delete[] this->tchar;
         this->max_length = 128;
         this->loglength = 0;
-        this->tchar = new char[this->max_length];
+        this->tchar = new char[this->max_length]{'\0'};
     }
 
     //判断空间是否足够
@@ -1063,7 +1077,7 @@ tstring &tstring::operator<<(const char *str)
         delete[] this->tchar;
         this->max_length = 128;
         this->loglength = 0;
-        this->tchar = new char[this->max_length];
+        this->tchar = new char[this->max_length]{'\0'};
     }
 
     size_t templength = GetPCharLength(str);
@@ -1137,27 +1151,39 @@ std::istream &operator>>(std::istream &is, tstring &tstr)
     //识别是否需要清空
     if (tstr.loglength != 0)
     {
-        delete tstr.tchar;
+        delete[] tstr.tchar;
         tstr.max_length = 128;
         tstr.loglength = 0;
-        tstr.tchar = new char[tstr.max_length];
+        tstr.tchar = new char[tstr.max_length]{'\0'};
     }
 
-    //当前读取的位数
-    size_t templength = 0;
-
-    while (!is.eof())
+    /*
+    *   获取数据总长度 
+    *  Gets the total length of the data.
+    */
+    is.seekg(0, is.end);
+    size_t allLength = is.tellg();
+    is.seekg(0, is.beg);
+    if (allLength != 0)
     {
-        is.read(&tstr.tchar[templength], 1);
-        templength++;
-        if (templength == tstr.max_length - 1)
-        {
-            //检查扩容
-            tstr.checkNextMaxSizeSpace(templength);
-        }
+        /*
+        *   将字符串长度设置为可容纳数据的长度 
+        *  Sets the string length to the length that can hold data.
+        */
+        tstr.reSize(allLength);
+
+        /*
+        *   一次性读取
+        *  One-time read.
+        */
+        is.read(tstr.tchar, allLength);
+
+        /*
+        *   更新tstring长度 
+        *  Update the tstring length.
+        */
+        tstr.loglength = allLength;
     }
-    //每读取完一位都会++，所以-1回至实际长度
-    tstr.loglength = templength - 1;
     return is;
 }
 
@@ -1214,7 +1240,7 @@ tstring &tstring::operator=(const std::string &stdstr)
     if (this->loglength != 0)
     {
         delete[] this->tchar;
-        this->tchar = new char[128];
+        this->tchar = new char[128]{'\0'};
         this->loglength = 0;
         this->max_length = 128;
     }
@@ -1310,21 +1336,16 @@ char &tstring::operator[](int move)
 
 tstring &tstring::operator+=(const char &ch)
 {
-    //将char转化为指针类型
-    char tempch[2] = {ch, '\0'};
-    char *ptemp = tempch;
-
     //获得相加后的总长度
     size_t templength = this->loglength + 1;
 
     //检查临时对象空间是否够用
     this->checkNextMaxSizeSpace(templength);
 
+    //末尾追加字符
+    this->tchar[this->getLength()] = ch;
+
     //将相加后的总长度设为对象的长度
     this->loglength = templength;
-
-    //将+后字符追加到对象
-    Strcat(this->tchar, ptemp);
-
     return *this;
 }

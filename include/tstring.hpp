@@ -147,6 +147,12 @@ public:
     */
     iterator erase(iterator iter);
 
+    /*
+    *   指定字符串长度
+    *  Specify the length of the string
+    */
+    void reSize(size_t size);
+
 public:
     //重载=运行算符，使用=char*赋值
     tstring &operator=(const char *str);

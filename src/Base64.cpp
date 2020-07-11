@@ -6,9 +6,10 @@ tstring Encode(const char *Data, int DataByte)
     const char EncodeTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     //返回值
     tstring strEncode;
+    strEncode.reSize(DataByte * 1.34 + 1);
     unsigned char Tmp[4] = {0};
     int LineLength = 0;
-    for (int i = 0; i < (int)(DataByte / 3); i++)
+    for (long long i = 0; i < (long long)(DataByte / 3); i++)
     {
         Tmp[1] = *Data++;
         Tmp[2] = *Data++;
@@ -24,7 +25,7 @@ tstring Encode(const char *Data, int DataByte)
         }
     }
     //对剩余数据进行编码
-    int Mod = DataByte % 3;
+    long long Mod = DataByte % 3;
     if (Mod == 1)
     {
         Tmp[1] = *Data++;
@@ -65,8 +66,8 @@ tstring Decode(const char *Data, int DataByte)
         };
     //返回值
     tstring strDecode;
-    int nValue;
-    int i = 0;
+    long long nValue;
+    long long i = 0;
     while (i < DataByte)
     {
         if (*Data != '\r' && *Data != '\n')

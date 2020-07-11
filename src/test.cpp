@@ -3,6 +3,7 @@
 #include <sstream>
 #include <cstring>
 #include <fstream>
+#include <ctime>
 using namespace std;
 int main(int argc, char const *argv[])
 {
@@ -258,11 +259,17 @@ int main(int argc, char const *argv[])
     Base64_File_test1.open("E:\\Desktop\\test.txt", std::ios::in);
     if (Base64_File_test1)
     {
-        string Base64_File_test2;
+        tstring Base64_File_test2;
+        long start = clock();
         Base64_File_test1 >> Base64_File_test2;
+        long end = clock();
+        cout << "tstring:" << end - start << endl;
         ofstream Base64_File_test4("E:\\Desktop\\test1.txt", std::ios::out | std::ios::trunc);
         tstring Base64_File_test3 = Base64_File_test2;
+         long EncodeStart = clock();
         Base64_File_test4 << Base64_File_test3.getEncodeBase64();
+        long EncodeEnd = clock();
+        cout << "结束:" << EncodeEnd - EncodeStart << endl;
         cout << "Base64 size:" << Base64_File_test3.getLength() << endl
              << "Base64_tstring MAX size:" << Base64_File_test3.getMaxSize() << endl;
         Base64_File_test4.close();
